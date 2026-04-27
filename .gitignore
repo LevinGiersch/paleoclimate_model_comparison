@@ -1,5 +1,6 @@
 *.tiff
 *.tif
 *.nc
+*.tar
 .ipynb_checkpoints/
 .venv/
