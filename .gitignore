@@ -2,3 +2,4 @@
 *.tif
 *.nc
 .ipynb_checkpoints/
+.venv/
