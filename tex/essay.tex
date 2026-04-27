@@ -1,0 +1,135 @@
+% !TeX spellcheck = <none>
+\documentclass[12pt]{scrartcl}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\newgeometry{left=3cm, right=3cm, top=3cm, bottom=3cm}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{textcomp}         % degree symbol etc.
+\usepackage{newunicodechar}   % map any stray Unicode code points
+
+\usepackage{amsmath}   % gives \tfrac, \dfrac, \eqref, etc.
+\usepackage{booktabs}   % for \toprule, \midrule, \bottomrule
+\usepackage{enumitem}   % enables [leftmargin=...] in itemize/description
+
+
+
+\usepackage[backend=biber, style=authoryear, sorting=nty]{biblatex}
+
+\addbibresource{Bib.bib}
+
+\usepackage{mathptmx}
+\usepackage{times}
+
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{}
+\rhead{Levin Damian Antonin Giersch}
+\rfoot{Page \thepage}
+
+
+
+\begin{document}
+	\begin{titlepage}
+		\centering
+		
+		\noindent
+		\textbf{\huge A harmonised point-extraction tool for heterogeneous paleoclimate NetCDF datasets}\\
+		\vspace{2cm}
+		\textbf{\large Essay or reort or something for geoinformatics project seminar}\\
+		\vspace{8cm}
+		\begin{tabular}{ll}
+			\textbf{Name:} & Levin Giersch \\
+			\textbf{Student ID:} & 1690 0515040 \\
+			\textbf{E-Mail:} & l.giersch@campus.tu-berlin.de\\
+			\textbf{Faculty:} & Faculty VI - Planning Building Environment\\
+			\textbf{Program:} & Geodesy and Geoinformation Science, M.Sc. \\
+			\textbf{Date:} & \today \\
+			\textbf{Lecturer:} & Prof. Dr.-Ing. Martin Kada
+		\end{tabular}
+		
+		\newpage
+		\tableofcontents
+		\thispagestyle{empty}
+		
+	\end{titlepage}
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%\newpage
+	\setcounter{page}{1}
+	\section*{Abstract}
+	\addcontentsline{toc}{section}{Abstract}
+	
+	\begin{abstract}
+	
+	\end{abstract}
+	
+	%-------------------------------------------------------------
+	\section{The Data}
+	- for all datasets: \\
+		- who made them \\
+		- when \\
+		- how where they made \\
+		- what was the goal \\
+		
+	\subsection{PalMod 2}
+	\subsection{Beyer2020}
+	\subsection{Trace21k}
+	
+	
+	%-------------------------------------------------------------
+	\section{Homogenization}
+	\subsection{Variables}
+	- which do i choose, are they directly comparable? \\
+	
+	\subsection{Time}
+	- time extend \\
+	- time resolution \\
+	
+	\subsection{Space}
+	- grid sizes \\
+	- changes in north south \\
+	- different resolutions for different times \\
+	
+	%-------------------------------------------------------------
+	\section{Point Extraction}
+	- do i just take the grid cell the point is in? \\
+	
+	%-------------------------------------------------------------
+	\section{Results)}
+	- For one example Point \\
+	- differences between models \\
+	
+	%-------------------------------------------------------------
+	\section{Future}
+	- Auto iterate over points and compare \\
+	- correlate with eg. north south, climate zones, water vs land etc. \\
+	
+	
+	%-------------------------------------------------------------
+	\section{Conclusion}
+	- hard to compare due to differences eg. resolutions \\
+	- comparison can helt to find out where the differ the most -> conlusion to how to improve models? \\
+	
+
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\newpage
+	\pagestyle{empty}
+	\printbibliography
+	
+\end{document}
+
