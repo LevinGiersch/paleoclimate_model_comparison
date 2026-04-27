@@ -1,1 +1,1 @@
-# paleoclim_compare
+# Paleoclimate Model Comparison
