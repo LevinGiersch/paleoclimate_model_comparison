@@ -2,6 +2,6 @@ metadata: https://www.wdc-climate.de/ui/entry?acronym=PMMXMCRTDGP111
 different versions: https://www.palmod.de/publication-data/palmod-data-collections (propably not needed, the p1f1 is the one eskil used too)
 
 - have to create account at wdc to get access to data: https://www.wdc-climate.de/ui/login
--- may take a few days :(
+-- may take a few days. account name and pw in my password manager
 
 - download jblob (tool do download the data): https://www.wdc-climate.de/ui/info?site=jblob
