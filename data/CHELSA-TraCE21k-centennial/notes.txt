@@ -1,0 +1,6 @@
+https://www.chelsa-climate.org/datasets/chelsa-trace21k-centennial
+https://envicloud.wsl.ch/#/?bucket=https%3A%2F%2Fos.zhdk.cloud.switch.ch%2Fchelsa01%2F&prefix=chelsa_trace21k%2Fglobal%2Fcentennial%2F (all selected)
+
+
+- only available to download as geotiff
+-- need to be converted to netcdf

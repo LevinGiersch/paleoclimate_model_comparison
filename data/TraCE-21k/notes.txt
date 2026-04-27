@@ -1,0 +1,10 @@
+same files as in /ccsm3/trace/ folder from the drive but fresh downloaded (i dont know if anything was changed or actualized)
+
+- https://gdex.ucar.edu/datasets/d651050/dataaccess/
+- TraCE Main Land Decadal Average Data Files
+- d651050 | DOI: 10.5065/CXB5-TV56
+- 104 Files (16.09G)
+
+
+- directly downloads via wget python script 
+- available as netcdf files
