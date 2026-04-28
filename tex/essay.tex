@@ -41,179 +41,179 @@
 
 
 \begin{document}
-	\begin{titlepage}
-		\centering
-		
-		\noindent
-		\textbf{\huge A harmonised point-extraction tool for heterogeneous paleoclimate NetCDF datasets}\\
-		\vspace{2cm}
-		\textbf{\large Essay or reort or something for geoinformatics project seminar}\\
-		\vspace{8cm}
-		\begin{tabular}{ll}
-			\textbf{Name:} & Levin Giersch \\
-			\textbf{Student ID:} & 1690 0515040 \\
-			\textbf{E-Mail:} & l.giersch@campus.tu-berlin.de\\
-			\textbf{Faculty:} & Faculty VI - Planning Building Environment\\
-			\textbf{Program:} & Geodesy and Geoinformation Science, M.Sc. \\
-			\textbf{Date:} & \today \\
-			\textbf{Lecturer:} & Prof. Dr.-Ing. Martin Kada
-		\end{tabular}
-		
-		\newpage
-		\tableofcontents
-		\thispagestyle{empty}
-		
-	\end{titlepage}
+\begin{titlepage}
+	\centering
 	
+	\noindent
+	\textbf{\huge A harmonised point-extraction tool for heterogeneous paleoclimate NetCDF datasets}\\
+	\vspace{2cm}
+	\textbf{\large Essay or reort or something for geoinformatics project seminar}\\
+	\vspace{8cm}
+	\begin{tabular}{ll}
+		\textbf{Name:} & Levin Giersch \\
+		\textbf{Student ID:} & 1690 0515040 \\
+		\textbf{E-Mail:} & l.giersch@campus.tu-berlin.de\\
+		\textbf{Faculty:} & Faculty VI - Planning Building Environment\\
+		\textbf{Program:} & Geodesy and Geoinformation Science, M.Sc. \\
+		\textbf{Date:} & \today \\
+		\textbf{Lecturer:} & Prof. Dr.-Ing. Martin Kada
+	\end{tabular}
 	
-	
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%\newpage
-	\setcounter{page}{1}
-	\section*{Abstract}
-	\addcontentsline{toc}{section}{Abstract}
-	
-	\begin{abstract}
-	
-	\end{abstract}
-	
-	%-------------------------------------------------------------
-
-	\section{Intro}
-	- Paleoclimate models are useful for:\\
-		- Reconstructing Earth's climate before direct measurements existed\\
-		- Understanding how the climate responds to forcings like solar output, volcanic eruptions, orbital cycles, and CO2\\
-		- Testing and validating modern climate models against known past states\\
-		- Establishing the natural variability range of climate, separate from human influence\\
-		- Constraining climate sensitivity (temperature change per CO2 doubling)\\
-		- Studying planetary climate evolution — Mars, Venus, and other terrestrial bodies\\
-		- Using past warm periods (e.g. Pliocene) as analogues for near-future climate projections\\
-	
-	- there are many different paleoclimate models.\\
-	- coparing them is important to detect outliers, irregularities or strong differences eg. to help improve the models\\
-	
-	
-	\section{The Data}
-	- can be downloaded via data\_downloader.ipynb
-	
-	\subsection{Trace21k}
-	- Simulation of the Transient Climate of the Last 21,000 Years\\
-	- Chosen Version: TraCE Main Land Decadal Average\\
-	- developed by: see source \\
-	- year of development: see source\\
-	- how where they made: fully-coupled, non-accelerated atmosphere-ocean-sea ice-land surface CCSM3 simulation\\
-	- what was the goal: \\
-	- nr. files: 2\\
-	- size (gb): 449,2 MB\\
-	- type: netcdf\\
-	- used variables: TSA, TSOI\\
-	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
-	- other info:  \\
-	- extend time: 22,000 BCE to 1990 CE \\
-	- resolution time: decadal averages\\
-	- extend space: global land\\
-	- resolution space: T31\_gx3\\
-	- source: \cite{trace21k_data}\\
-
-	\subsection{CHELSA-TraCE21k}
-	- Chosen Version: CHELSA-TraCE21k-centennial\\
-	- developed by: see source\\
-	- year of development: see source \\
-	- how where they made: generated with the CHELSA-TraCE21k downscaling model. \\
-	- what was the goal: \\
-	- nr. files: \\
-	- size (gb): \\
-	- type: geotiff -> need to be converted to netcdf\\
-	- used variables: tasmin, tasmax -> tasmin+tasmax/2 to get mean\\
-	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
-	- other info: \\
-	- extend time: Start Time 21k BP, End Time 0 BP\\
-	- resolution time: monthly \\
-	- extend space: global \\
-	- resolution space: kilometer scale\\
-	- source: \cite{chelsa_trace21k_paper}, \cite{chelsa_trace21k_data} \\
-	- because of big filesize i download tasmax tiffs, convert to netcdf, compte decadal mean, delete the tifs and then do the same for tasmin
-	
-	
-	\subsection{Beyer 2021 (v4)}
-	- Chosen Version: 12293345 version 4 (figshare, published 24 June 2021)\\
-	- developed by: Robert M. Beyer, Mario Krapp \& Andrea Manica (Department of Zoology, University of Cambridge)\\
-	- year of development: original paper published 14 July 2020 (received 03 July 2019); dataset v4 published 24 June 2021; addendum paper published 29 September 2021\\
-	- how were they made: Delta-method-based downscaling and bias correction, combining medium-resolution HadCM3 transient simulations with high-resolution HadAM3H snapshots and present-day observational data\\
-	- what was the goal: Fill the gap between high-temporal-resolution but low-spatial-resolution palaeoclimate simulations and high-spatial-resolution snapshot-only datasets\\
-	- nr. files: \\
-	- size (GB): \\
-	- type: NetCDF (data) + R / Python / MATLAB scripts\\
-	- used variables: \\
-	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
-	- other info: v4 adds global monthly NPP relative to v3; documented in the 2021 addendum\\
-	- extend time: 120000 BP to pre-industrial modern era (0 BP)\\
-	- resolution time: 2000-yr steps from 120000--22000 BP; 1000-yr steps from 22000 BP to pre-industrial (72 snapshots total)\\
-	- extend space: global terrestrial (full 360° longitude; latitude coverage 720x 300 cells at 0.5°, i.e. 150° of latitude)\\
-	- resolution space: 0.5° equirectangular grid (\textasciitilde55 km at the equator)\\
-	- source: \cite{beyer2020_paper}, \cite{beyer2021_addendum}, \cite{beyer2021_data_4}\\
-	
-	
-	\subsection{PalMod 2}
-	- Chosen Version: PalMod2 MPI-M MPI-ESM1-2-CR Transient Simulations of the Last Deglaciation with prescribed ice sheets from GLAC-1D reconstructions (r1i1p1f1)\\
-	- developed by: Mikolajewicz, U.; Kapsch, M.-L.; Gayler, V.; Meccia, V. L.; Riddick, T.; Ziemen, F. A.; Schannwell, C. (Max Planck Institute for Meteorology / DKRZ)\\
-	- year of development: dataset DOI published 2023\\
-	- how where they made: fully-coupled transient simulation with the Max Planck Institute Earth System Model version 1.2 in coarse resolution (MPI-ESM1-2-CR), combining the ECHAM6.3 spectral atmosphere (T31, 31 vertical levels)
-	- what was the goal: produce a transient, fully-coupled simulation of the Last Deglaciation with realistic, time-evolving ice-sheet, topography and land-sea-mask forcing as part of the PalMod2 project\\
-	- nr. files: \\
-	- size (gb): \\
-	- type: NetCDF\\
-	- used variables: tas (PMMXMCRTDGr111Amtasgn30201, near-surface air temperature, monthly)
-	tsl: (PMMXMCRTDGr111Lmtslgn30201, soil temperature by layer, monthly) \\
-	- how to get: WDCC archive at DKRZ; download via jblob client after registration \cite{wdcc_jblob} (via python script in my data\_downloader.ipynb notebook)\\
-	- other info: \\
-	- extend time: 25000 BP to 0 BP (= 1950 CE)\\
-	- resolution time: variable-dependent --- monthly for the standard atmosphere/land/ocean/sea-ice tables (Amon, Lmon, Omon, SImon, LImon, Emon), decadal (dec, Odec) and fixed (fx, Ofx); GLAC-1D ice-sheet/topography forcing updated every 10 years\\
-	- extend space: global\\
-	- resolution space: atmosphere/land T31 (\textasciitilde3,75°), ocean MPIOM1.6 nominal \textasciitilde3°\\
-	- source: \cite{palmod2_data}\\
-	
-	
-	%-------------------------------------------------------------
-	\section{Homogenization}
-	\subsection{Variables}
-	- which do i choose, are they directly comparable? \\
-	
-	\subsection{Time}
-	- time extend \\
-	- time resolution \\
-	
-	\subsection{Space}
-	- grid sizes \\
-	- changes in north south \\
-	- different resolutions for different times \\
-	
-	%-------------------------------------------------------------
-	\section{Point Extraction}
-	- do i just take the grid cell the point is in? \\
-	
-	%-------------------------------------------------------------
-	\section{Results)}
-	- For one example Point \\
-	- differences between models \\
-	
-	%-------------------------------------------------------------
-	\section{Future}
-	- Auto iterate over points and compare \\
-	- correlate with eg. north south, climate zones, water vs land etc. \\
-	
-	
-	%-------------------------------------------------------------
-	\section{Conclusion}
-	- hard to compare due to differences eg. resolutions \\
-	- comparison can helt to find out where the differ the most -> conlusion to how to improve models? \\
-	
-
-	
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\newpage
-	\pagestyle{empty}
-	\printbibliography
+	\tableofcontents
+	\thispagestyle{empty}
 	
+\end{titlepage}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newpage
+\setcounter{page}{1}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+
+\begin{abstract}
+
+\end{abstract}
+
+%-------------------------------------------------------------
+
+\section{Intro}
+- Paleoclimate models are useful for:\\
+	- Reconstructing Earth's climate before direct measurements existed\\
+	- Understanding how the climate responds to forcings like solar output, volcanic eruptions, orbital cycles, and CO2\\
+	- Testing and validating modern climate models against known past states\\
+	- Establishing the natural variability range of climate, separate from human influence\\
+	- Constraining climate sensitivity (temperature change per CO2 doubling)\\
+	- Studying planetary climate evolution — Mars, Venus, and other terrestrial bodies\\
+	- Using past warm periods (e.g. Pliocene) as analogues for near-future climate projections\\
+
+- there are many different paleoclimate models.\\
+- coparing them is important to detect outliers, irregularities or strong differences eg. to help improve the models\\
+
+
+\section{The Data}
+- can be downloaded via data\_downloader.ipynb
+
+\subsection{Trace21k}
+- Simulation of the Transient Climate of the Last 21,000 Years\\
+- Chosen Version: TraCE Main Land Decadal Average\\
+- developed by: see source \\
+- year of development: see source\\
+- how where they made: fully-coupled, non-accelerated atmosphere-ocean-sea ice-land surface CCSM3 simulation\\
+- what was the goal: \\
+- nr. files: 2\\
+- size (gb): 449,2 MB\\
+- type: netcdf\\
+- used variables: TSA, TSOI\\
+- how to get: (via python script in my data\_downloader.ipynb notebook)\\
+- other info:  \\
+- extend time: 22,000 BCE to 1990 CE \\
+- resolution time: decadal averages\\
+- extend space: global land\\
+- resolution space: T31\_gx3\\
+- source: \cite{trace21k_data}\\
+
+\subsection{CHELSA-TraCE21k}
+- Chosen Version: CHELSA-TraCE21k-centennial\\
+- developed by: see source\\
+- year of development: see source \\
+- how where they made: generated with the CHELSA-TraCE21k downscaling model. \\
+- what was the goal: \\
+- nr. files: \\
+- size (gb): \\
+- type: geotiff -> need to be converted to netcdf\\
+- used variables: tasmin, tasmax -> tasmin+tasmax/2 to get mean\\
+- how to get: (via python script in my data\_downloader.ipynb notebook)\\
+- other info: \\
+- extend time: Start Time 21k BP, End Time 0 BP\\
+- resolution time: monthly \\
+- extend space: global \\
+- resolution space: kilometer scale\\
+- source: \cite{chelsa_trace21k_paper}, \cite{chelsa_trace21k_data} \\
+- because of big filesize i download tasmax tiffs, convert to netcdf, compte decadal mean, delete the tifs and then do the same for tasmin
+
+
+\subsection{Beyer 2021 (v4)}
+- Chosen Version: 12293345 version 4 (figshare, published 24 June 2021)\\
+- developed by: Robert M. Beyer, Mario Krapp \& Andrea Manica (Department of Zoology, University of Cambridge)\\
+- year of development: original paper published 14 July 2020 (received 03 July 2019); dataset v4 published 24 June 2021; addendum paper published 29 September 2021\\
+- how were they made: Delta-method-based downscaling and bias correction, combining medium-resolution HadCM3 transient simulations with high-resolution HadAM3H snapshots and present-day observational data\\
+- what was the goal: Fill the gap between high-temporal-resolution but low-spatial-resolution palaeoclimate simulations and high-spatial-resolution snapshot-only datasets\\
+- nr. files: \\
+- size (GB): \\
+- type: NetCDF (data) + R / Python / MATLAB scripts\\
+- used variables: \\
+- how to get: (via python script in my data\_downloader.ipynb notebook)\\
+- other info: v4 adds global monthly NPP relative to v3; documented in the 2021 addendum\\
+- extend time: 120000 BP to pre-industrial modern era (0 BP)\\
+- resolution time: 2000-yr steps from 120000--22000 BP; 1000-yr steps from 22000 BP to pre-industrial (72 snapshots total)\\
+- extend space: global terrestrial (full 360° longitude; latitude coverage 720x 300 cells at 0.5°, i.e. 150° of latitude)\\
+- resolution space: 0.5° equirectangular grid (\textasciitilde55 km at the equator)\\
+- source: \cite{beyer2020_paper}, \cite{beyer2021_addendum}, \cite{beyer2021_data_4}\\
+
+
+\subsection{PalMod 2}
+- Chosen Version: PalMod2 MPI-M MPI-ESM1-2-CR Transient Simulations of the Last Deglaciation with prescribed ice sheets from GLAC-1D reconstructions (r1i1p1f1)\\
+- developed by: Mikolajewicz, U.; Kapsch, M.-L.; Gayler, V.; Meccia, V. L.; Riddick, T.; Ziemen, F. A.; Schannwell, C. (Max Planck Institute for Meteorology / DKRZ)\\
+- year of development: dataset DOI published 2023\\
+- how where they made: fully-coupled transient simulation with the Max Planck Institute Earth System Model version 1.2 in coarse resolution (MPI-ESM1-2-CR), combining the ECHAM6.3 spectral atmosphere (T31, 31 vertical levels)
+- what was the goal: produce a transient, fully-coupled simulation of the Last Deglaciation with realistic, time-evolving ice-sheet, topography and land-sea-mask forcing as part of the PalMod2 project\\
+- nr. files: \\
+- size (gb): \\
+- type: NetCDF\\
+- used variables: tas (PMMXMCRTDGr111Amtasgn30201, near-surface air temperature, monthly)
+tsl: (PMMXMCRTDGr111Lmtslgn30201, soil temperature by layer, monthly) \\
+- how to get: WDCC archive at DKRZ; download via jblob client after registration \cite{wdcc_jblob} (via python script in my data\_downloader.ipynb notebook)\\
+- other info: \\
+- extend time: 25000 BP to 0 BP (= 1950 CE)\\
+- resolution time: variable-dependent --- monthly for the standard atmosphere/land/ocean/sea-ice tables (Amon, Lmon, Omon, SImon, LImon, Emon), decadal (dec, Odec) and fixed (fx, Ofx); GLAC-1D ice-sheet/topography forcing updated every 10 years\\
+- extend space: global\\
+- resolution space: atmosphere/land T31 (\textasciitilde3,75°), ocean MPIOM1.6 nominal \textasciitilde3°\\
+- source: \cite{palmod2_data}\\
+
+
+%-------------------------------------------------------------
+\section{Homogenization}
+\subsection{Variables}
+- which do i choose, are they directly comparable? \\
+
+\subsection{Time}
+- time extend \\
+- time resolution \\
+
+\subsection{Space}
+- grid sizes \\
+- changes in north south \\
+- different resolutions for different times \\
+
+%-------------------------------------------------------------
+\section{Point Extraction}
+- do i just take the grid cell the point is in? \\
+
+%-------------------------------------------------------------
+\section{Results)}
+- For one example Point \\
+- differences between models \\
+
+%-------------------------------------------------------------
+\section{Future}
+- Auto iterate over points and compare \\
+- correlate with eg. north south, climate zones, water vs land etc. \\
+
+
+%-------------------------------------------------------------
+\section{Conclusion}
+- hard to compare due to differences eg. resolutions \\
+- comparison can helt to find out where the differ the most -> conlusion to how to improve models? \\
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\pagestyle{empty}
+\printbibliography
+
 \end{document}
 
