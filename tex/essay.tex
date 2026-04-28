@@ -132,6 +132,7 @@
 	- extend space: global \\
 	- resolution space: kilometer scale\\
 	- source: \cite{chelsa_trace21k_paper}, \cite{chelsa_trace21k_data} \\
+	- because of big filesize i download tasmax tiffs, convert to netcdf, compte decadal mean, delete the tifs and then do the same for tasmin
 	
 	
 	\subsection{Beyer 2021 (v4)}
@@ -146,9 +147,9 @@
 	- used variables: \\
 	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
 	- other info: v4 adds global monthly NPP relative to v3; documented in the 2021 addendum\\
-	- extend time: 120{,}000 BP to pre-industrial modern era (0 BP)\\
+	- extend time: 120000 BP to pre-industrial modern era (0 BP)\\
 	- resolution time: 2000-yr steps from 120000--22000 BP; 1000-yr steps from 22000 BP to pre-industrial (72 snapshots total)\\
-	- extend space: global terrestrial (full 360° longitude; latitude coverage 720 $\times$ 300 cells at 0.5°, i.e. 150° of latitude)\\
+	- extend space: global terrestrial (full 360° longitude; latitude coverage 720x 300 cells at 0.5°, i.e. 150° of latitude)\\
 	- resolution space: 0.5° equirectangular grid (\textasciitilde55 km at the equator)\\
 	- source: \cite{beyer2020_paper}, \cite{beyer2021_addendum}, \cite{beyer2021_data_4}\\
 	
