@@ -1,0 +1,6 @@
+name: palclim
+channels:
+  - conda-forge
+dependencies:
+  - cdo
+prefix: /home/lghomeoffice/miniforge3/envs/palclim
