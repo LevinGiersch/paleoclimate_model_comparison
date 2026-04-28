@@ -4,6 +4,8 @@
 *.tiff
 *.tif
 
+*.part
+
 *.nc
 
 *.tar
