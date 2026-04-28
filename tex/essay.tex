@@ -107,7 +107,7 @@
 	- size (gb): 449,2 MB\\
 	- type: netcdf\\
 	- used variables: TSA, TSOI\\
-	- how to get: downloaded via wget python script\\
+	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
 	- other info:  \\
 	- extend time: 22,000 BCE to 1990 CE \\
 	- resolution time: decadal averages\\
@@ -125,7 +125,7 @@
 	- size (gb): \\
 	- type: geotiff -> need to be converted to netcdf\\
 	- used variables: tasmin, tasmax -> tasmin+tasmax/2 to get mean\\
-	- how to get: downloaded via wget python script \\
+	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
 	- other info: \\
 	- extend time: Start Time 21k BP, End Time 0 BP\\
 	- resolution time: monthly \\
@@ -140,11 +140,11 @@
 	- year of development: original paper published 14 July 2020 (received 03 July 2019); dataset v4 published 24 June 2021; addendum paper published 29 September 2021\\
 	- how were they made: Delta-method-based downscaling and bias correction, combining medium-resolution HadCM3 transient simulations with high-resolution HadAM3H snapshots and present-day observational data\\
 	- what was the goal: Fill the gap between high-temporal-resolution but low-spatial-resolution palaeoclimate simulations and high-spatial-resolution snapshot-only datasets\\
-	- nr. files: main NetCDF data file plus R, Python and MATLAB example scripts (verify exact count on the figshare page)\\
-	- size (GB): 1.24 GB (main NetCDF data file)\\
+	- nr. files: \\
+	- size (GB): \\
 	- type: NetCDF (data) + R / Python / MATLAB scripts\\
 	- used variables: \\
-	- how to get: downloaded via wget Python script\\
+	- how to get: (via python script in my data\_downloader.ipynb notebook)\\
 	- other info: v4 adds global monthly NPP relative to v3; documented in the 2021 addendum\\
 	- extend time: 120{,}000 BP to pre-industrial modern era (0 BP)\\
 	- resolution time: 2000-yr steps from 120000--22000 BP; 1000-yr steps from 22000 BP to pre-industrial (72 snapshots total)\\
@@ -154,22 +154,23 @@
 	
 	
 	\subsection{PalMod 2}
-	- Chosen Version: \\
-	- developed by: \\
-	- year of development: \\
-	- how where they made: \\
-	- what was the goal: \\
+	- Chosen Version: PalMod2 MPI-M MPI-ESM1-2-CR Transient Simulations of the Last Deglaciation with prescribed ice sheets from GLAC-1D reconstructions (r1i1p1f1)\\
+	- developed by: Mikolajewicz, U.; Kapsch, M.-L.; Gayler, V.; Meccia, V. L.; Riddick, T.; Ziemen, F. A.; Schannwell, C. (Max Planck Institute for Meteorology / DKRZ)\\
+	- year of development: dataset DOI published 2023\\
+	- how where they made: fully-coupled transient simulation with the Max Planck Institute Earth System Model version 1.2 in coarse resolution (MPI-ESM1-2-CR), combining the ECHAM6.3 spectral atmosphere (T31, 31 vertical levels)
+	- what was the goal: produce a transient, fully-coupled simulation of the Last Deglaciation with realistic, time-evolving ice-sheet, topography and land-sea-mask forcing as part of the PalMod2 project\\
 	- nr. files: \\
 	- size (gb): \\
-	- type: \\
-	- used variables: \\
-	- how to get: \\
+	- type: NetCDF\\
+	- used variables: "tas": "PMMXMCRTDGr111Amtasgn30201",  # near-surface air temperature, monthly
+	"tsl": "PMMXMCRTDGr111Lmtslgn30201",  # soil temperature by layer, monthly \\
+	- how to get: WDCC archive at DKRZ; download via jblob client after registration \cite{wdcc_jblob} (via python script in my data\_downloader.ipynb notebook)\\
 	- other info: \\
-	- extend time: \\
-	- resolution time: \\
-	- extend space: \\
-	- resolution space: \\
-	- source: 	\\
+	- extend time: 25000 BP to 0 BP (= 1950 CE)\\
+	- resolution time: variable-dependent --- monthly for the standard atmosphere/land/ocean/sea-ice tables (Amon, Lmon, Omon, SImon, LImon, Emon), decadal (dec, Odec) and fixed (fx, Ofx); GLAC-1D ice-sheet/topography forcing updated every 10 years\\
+	- extend space: global\\
+	- resolution space: atmosphere/land T31 (\textasciitilde3,75°), ocean MPIOM1.6 nominal \textasciitilde3°\\
+	- source: \cite{palmod2_data}\\
 	
 	
 	%-------------------------------------------------------------
