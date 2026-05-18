@@ -1,0 +1,328 @@
+==============================================================================
+DATASET: Beyer2020
+==============================================================================
+path     : /home/lghomeoffice/git/paleoclimate_model_comparison/data/Beyer2020/data/LateQuaternary_Environment.nc
+variable : temperature   (declared unit in df_air: degC)
+
+-- global attributes --
+  Title: Late Quaternary Environment v1.0
+  Source: https://figshare.com/articles/Late_Pleistocene_and_Holocene_climate_bioclimate_and_vegetation/8327081
+  Citation: Beyer R, Krapp M, Manica A (2020): "High-resolution terrestrial climate, bioclimate and vegetation for the last 120,000 years"
+  Contact: rb792@cam.ac.uk
+  Date: 23-Apr-2020 12:43:11
+
+-- dimensions --
+  time: 72
+  month: 12
+  latitude: 300
+  longitude: 720
+
+-- coordinates --
+  longitude  shape=(720,)  dtype=float32  range=[-179.7500, 179.7500]
+      units: degrees_north
+  latitude  shape=(300,)  dtype=float32  range=[-59.7500, 89.7500]
+      units: degrees_east
+  time  shape=(72,)  dtype=int32  range=[-120000.0000, 0.0000]
+      units: years since present
+  month  shape=(12,)  dtype=int8  range=[1.0000, 12.0000]
+
+-- time convention --
+  units              : years since present
+  raw range          : [-120000.000, 0.000]  (n=72)
+  raw step           : median = 2000.000, min = 1000.000, max = 2000.000
+  converted ka BP    : [-0.000, 120.000]
+
+-- variable: temperature --
+  dims    : ('time', 'month', 'latitude', 'longitude')
+  shape   : (72, 12, 300, 720)
+  dtype   : float32
+  attr long_name: monthly mean temperature
+  attr units: degrees celsius
+
+-- spatial grid --
+  detected lat coord: latitude
+  detected lon coord: longitude
+  lat range : [-59.750, 89.750]  resolution ≈ 0.5000°
+  lon range : [-179.750, 179.750]  resolution ≈ 0.5000°  (convention: -180–180)
+
+==============================================================================
+DATASET: PalMod2
+==============================================================================
+path     : /home/lghomeoffice/git/paleoclimate_model_comparison/data/PalMod2/output/PMMXMCRTDGr111Amtasgn30201_1-250.nc
+variable : tas   (declared unit in df_air: K)
+
+-- global attributes --
+  CDI: Climate Data Interface version 2.5.0 (https://mpimet.mpg.de/cdi)
+  Conventions: CF-1.7 PalMod-2.0
+  source: MPI-ESM1.2-CR (2017): 
+aerosol: none, prescribed Kinne (2010)
+atmos: ECHAM6.3 (spectral T31; 96 x 48 longitude/latitude; 31 levels; top level 10 hPa)
+atmosChem: none, prescribed
+land: JSBACH3.20, River Transport Model
+landIce: none / mPISM 0.7 (10 km x 10 km (NH), 15 km x 15 km (SH), 121 levels)
+ocean: MPIOM1.63 (bipolar GR3.0, approximately 300km; 122 x 101 longitude/latitude; 40 levels; top grid cell 0-15 m)
+ocnBgchem: none, prescribed
+seaIce: unnamed (thermodynamic (Semtner zero-layer) dynamic (Hibler 79) sea ice model)
+solidLand: none / VILMA-1D
+  institution: Max Planck Institute for Meteorology, Hamburg 20146, Germany
+  activity_id: PalMod2
+  contact: palmod2-mpi-esm@dkrz.de
+  experiment: transient deglaciation with GLAC-1D ice sheets
+  experiment_id: transient-deglaciation-prescribed-glac1d
+  external_variables: areacella
+  forcing_index: 1
+  frequency: year
+  grid: gn
+  grid_label: gn
+  initialization_index: 1
+  institution_id: MPI-M
+  product: model-output
+  project_id: PalMod2
+  realization_index: 1
+  realm: atmos
+  source_id: MPI-ESM1-2-CR
+  source_type: AOGCM
+  sub_experiment: none
+  sub_experiment_id: none
+  table_id: Amon
+  variable_id: tas
+  license: PalMod2 model data produced by MPI-M is licensed under a Creative Commons Attribution ShareAlike 4.0 International License (https://creativecommons.org/licenses). The data producers and data providers make no warranty, either express or implied, including, but not limited to, warranties of merchantability and fitness for a particular purpose. All liabilities arising from the supply of the information (including any liability arising in negligence) are excluded to the fullest extent permitted by law.
+  cmor_version: 3.6.1
+  tracking_id: hdl:21.14105/35abb1ae-184d-4bdb-8579-0533dcd5f42f
+  creation_date: 2023-02-02T10:00:00Z
+  history: Wed May 06 16:00:53 2026: cdo mergetime /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0000101-0010012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0010101-0020012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0020101-0030012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0030101-0040012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0040101-0050012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0050101-0060012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0060101-0070012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0070101-0080012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0080101-0090012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0090101-0100012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0100101-0110012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0110101-0120012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0120101-0130012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0130101-0140012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0140101-0150012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0150101-0160012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0160101-0170012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0170101-0180012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0180101-0190012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0190101-0200012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0200101-0210012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0210101-0220012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0220101-0230012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0230101-0240012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0240101-0250012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0250101-0260012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0260101-0270012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0270101-0280012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0280101-0290012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0290101-0300012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0300101-0310012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0310101-0320012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0320101-0330012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0330101-0340012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0340101-0350012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0350101-0360012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0360101-0370012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0370101-0380012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0380101-0390012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0390101-0400012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0400101-0410012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0410101-0420012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0420101-0430012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0430101-0440012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0440101-0450012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0450101-0460012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0460101-0470012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0470101-0480012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0480101-0490012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0490101-0500012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0500101-0510012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0510101-0520012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0520101-0530012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0530101-0540012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0540101-0550012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0550101-0560012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0560101-0570012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0570101-0580012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0580101-0590012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0590101-0600012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0600101-0610012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0610101-0620012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0620101-0630012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0630101-0640012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0640101-0650012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0650101-0660012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0660101-0670012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0670101-0680012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0680101-0690012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0690101-0700012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0700101-0710012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0710101-0720012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0720101-0730012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0730101-0740012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0740101-0750012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0750101-0760012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0760101-0770012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0770101-0780012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0780101-0790012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0790101-0800012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0800101-0810012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0810101-0820012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0820101-0830012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0830101-0840012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0840101-0850012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0850101-0860012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0860101-0870012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0870101-0880012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0880101-0890012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0890101-0900012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0900101-0910012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0910101-0920012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0920101-0930012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0930101-0940012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0940101-0950012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0950101-0960012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0960101-0970012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0970101-0980012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0980101-0990012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0990101-1000012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1000101-1010012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1010101-1020012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1020101-1030012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1030101-1040012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1040101-1050012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1050101-1060012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1060101-1070012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1070101-1080012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1080101-1090012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1090101-1100012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1100101-1110012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1110101-1120012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1120101-1130012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1130101-1140012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1140101-1150012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1150101-1160012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1160101-1170012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1170101-1180012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1180101-1190012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1190101-1200012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1200101-1210012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1210101-1220012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1220101-1230012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1230101-1240012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1240101-1250012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1250101-1260012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1260101-1270012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1270101-1280012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1280101-1290012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1290101-1300012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1300101-1310012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1310101-1320012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1320101-1330012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1330101-1340012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1340101-1350012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1350101-1360012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1360101-1370012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1370101-1380012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1380101-1390012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1390101-1400012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1400101-1410012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1410101-1420012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1420101-1430012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1430101-1440012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1440101-1450012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1450101-1460012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1460101-1470012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1470101-1480012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1480101-1490012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1490101-1500012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1500101-1510012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1510101-1520012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1520101-1530012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1530101-1540012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1540101-1550012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1550101-1560012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1560101-1570012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1570101-1580012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1580101-1590012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1590101-1600012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1600101-1610012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1610101-1620012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1620101-1630012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1630101-1640012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1640101-1650012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1650101-1660012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1660101-1670012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1670101-1680012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1680101-1690012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1690101-1700012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1700101-1710012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1710101-1720012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1720101-1730012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1730101-1740012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1740101-1750012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1750101-1760012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1760101-1770012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1770101-1780012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1780101-1790012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1790101-1800012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1800101-1810012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1810101-1820012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1820101-1830012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1830101-1840012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1840101-1850012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1850101-1860012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1860101-1870012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1870101-1880012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1880101-1890012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1890101-1900012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1900101-1910012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1910101-1920012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1920101-1930012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1930101-1940012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1940101-1950012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1950101-1960012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1960101-1970012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1970101-1980012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1980101-1990012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_1990101-2000012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2000101-2010012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2010101-2020012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2020101-2030012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2030101-2040012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2040101-2050012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2050101-2060012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2060101-2070012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2070101-2080012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2080101-2090012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2090101-2100012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2100101-2110012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2110101-2120012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2120101-2130012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2130101-2140012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2140101-2150012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2150101-2160012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2160101-2170012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2170101-2180012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2180101-2190012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2190101-2200012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2200101-2210012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2210101-2220012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2220101-2230012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2230101-2240012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2240101-2250012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2250101-2260012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2260101-2270012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2270101-2280012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2280101-2290012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2290101-2300012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2300101-2310012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2310101-2320012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2320101-2330012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2330101-2340012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2340101-2350012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2350101-2360012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2360101-2370012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2370101-2380012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2380101-2390012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2390101-2400012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2400101-2410012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2410101-2420012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2420101-2430012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2430101-2440012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2440101-2450012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2450101-2460012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2460101-2470012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2470101-2480012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2480101-2490012_ymean.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_2490101-2500012_ymean.nc /home/lghomeoffice/git/paleoclimate_model_comparison/data/PalMod2/output/PMMXMCRTDGr111Amtasgn30201_1-250
+Wed May 06 16:00:13 2026: cdo yearmean /home/lghomeoffice/git/paleoclimate_model_comparison/data/PalMod2/data/PMMXMCRTDGr111Amtasgn30201_1-250/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0000101-0010012.nc /tmp/tmp4awlxxku/tas_Amon_MPI-ESM1-2-CR_transient-deglaciation-prescribed-glac1d_r1i1p1f1_gn_0000101-0010012_ymean.nc
+2023-02-02T10:00:00Z ; CMOR rewrote data to be consistent with PalMod2, CF-1.7 PalMod-2.0 and CF standards.
+  nominal_resolution: 500 km
+  physics_index: 1
+  title: MPI-ESM1-2 output prepared for PalMod2
+  variant_info: Predecessor model version to p2. p2 contains a range of bug fixes and an updated model tuning: it comprises the introduction of a brine plume parameterization in MPI-OM and a modification of sea-ice lead closure parameters, improvement of the automated topography generation scripts (e.g. baroclinic exchange in shallow fjords), and a replacement of the direct use of topographic roughness in ECHAM6 by a parameterized treatment like the one in the standard ECHAM6 model. Tuning parameters are taken from Mauritsen and Roeckner (2020) and comprise the surface value of the critical humidity profile for cloud formation (crs), the threshold between cloud water and ice (csecfrl) and the fall speed of cloud ice (cvtfall). Additionally, a mean volcanic aerosol forcing was taken into account. For details see Supporting Information of Kapsch et al., 2022.
+  variant_label: r1i1p1f1
+  data_specs_version: 00.00.03
+  references: Kapsch, M.-L., Mikolajewicz, U., Ziemen, F., & Schannwell, C. (2022). Ocean response in transient simulations of the last deglaciation dominated by underlying ice-sheet reconstruction and method of meltwater distribution. Geophysical Research Letters, 49, e2021GL096767. https://doi.org/10.1029/2021GL096767
+MPI-ESM: Mauritsen, T. et al. (2019), Developments in the MPI‐M Earth System Model version 1.2 (MPI‐ESM1.2) and Its Response to Increasing CO2, J. Adv. Model. Earth Syst.,11, 998-1038, doi:10.1029/2018MS001400,
+Mueller, W.A. et al. (2018): A high‐resolution version of the Max Planck Institute Earth System Model MPI‐ESM1.2‐HR. J. Adv. Model. EarthSyst.,10,1383–1413, doi:10.1029/2017MS001217
+Bathymetry: Meccia, V. L., & Mikolajewicz, U. (2018). Interactive ocean bathymetry and coastlines for simulating the last deglaciation with the Max Planck Institute earth system model (MPI-ESM-v1.2). Geoscientific Model Development, 11(11), 4677–4692. https://doi.org/10.5194/gmd-11-4677-2018
+River Routing: Riddick, T., Brovkin, V., Hagemann, S., & Mikolajewicz, U. (2018). Dynamic hydrological discharge modelling for coupled climate model simulations of the last glacial cycle: The MPI-DynamicHD model version 3.0. Geoscientific Model Development, 11(10), 4291–4316. https://doi.org/10.5194/gmd-11-4291-2018
+  table_info: Creation Date:(1 February 2023) MD5:437d9b7f4524e7483e04d57b09f4aaaa
+  CDO: Climate Data Operators version 2.5.0 (https://mpimet.mpg.de/cdo)
+
+-- dimensions --
+  time: 25000
+  bnds: 2
+  lon: 96
+  lat: 48
+
+-- coordinates --
+  time  shape=(25000,)  dtype=float64  range=[181.2500, 9130878.2500]
+      standard_name: time
+      long_name: time
+      bounds: time_bnds
+      units: days since 1-1-1 00:00:00
+      calendar: proleptic_gregorian
+      axis: T
+  lon  shape=(96,)  dtype=float64  range=[0.0000, 356.2500]
+      standard_name: longitude
+      long_name: Longitude
+      units: degrees_east
+      axis: X
+      bounds: lon_bnds
+  lat  shape=(48,)  dtype=float64  range=[-87.1591, 87.1591]
+      standard_name: latitude
+      long_name: Latitude
+      units: degrees_north
+      axis: Y
+      bounds: lat_bnds
+  height  shape=()  dtype=float64  range=[2.0000, 2.0000]
+      standard_name: height
+      long_name: height
+      units: m
+      positive: up
+      axis: Z
+
+-- time convention --
+  units              : days since 1-1-1 00:00:00
+  raw range          : [181.250, 9130878.250]  (n=25000)
+  raw step           : median = 365.000, min = 365.000, max = 366.000
+  converted ka BP    : [0.000, 24.998]
+
+-- variable: tas --
+  dims    : ('time', 'lat', 'lon')
+  shape   : (25000, 48, 96)
+  dtype   : float32
+  attr standard_name: air_temperature
+  attr long_name: Near-Surface Air Temperature
+  attr units: K
+  attr CDI_grid_type: gaussian
+  attr CDI_grid_num_LPE: 24
+  attr cell_methods: area: time: mean
+  attr comment: near-surface (usually, 2 meter) air temperature
+  attr cell_measures: area: areacella
+  attr history: 2022-02-24T10:05:32Z altered by CMOR: Treated scalar dimension: 'height'. 2022-02-24T10:05:32Z altered by CMOR: replaced missing value flag (-9e+33) and corresponding data with standard missing value (1e+20). 2022-02-24T10:05:32Z altered by CMOR: Inverted axis: lat.
+
+-- spatial grid --
+  detected lat coord: lat
+  detected lon coord: lon
+  lat range : [-87.159, 87.159]  resolution ≈ 3.7110°
+  lon range : [0.000, 356.250]  resolution ≈ 3.7500°  (convention: 0–360)
+
+==============================================================================
+DATASET: TraCE-21k
+==============================================================================
+path     : /home/lghomeoffice/git/paleoclimate_model_comparison/data/TraCE-21k/data/trace.01-36.22000BP.clm2.TSA.22000BP_decavg_400BCE.nc
+variable : TSA   (declared unit in df_air: K)
+
+-- global attributes --
+  conventions: CF1.0
+  history: Fri Oct 25 23:50:11 2013: /glade/apps/opt/nco/4.2.3/gnu/4.7.2/bin/ncks -O -v date_written,mcdate,mcsec,mdcur,mscur,nstep,time,time_bounds,time_written,BSW,DZSOI,SUCSAT,WATSAT,ZSOI,area,landfrac,landmask,lat,latixy,latrof,levlak,levsoi,lon,longxy,lonrof,numlon,TSA b30.00_4kaDVTd.clm2.ncrcat.ann.nc to_archive/trace.01-36.22000BP.clm2.TSA.22000BP_decavg_400BCE.nc
+Fri Jan 22 13:42:17 2010: ncrcat -O -x -v QREFHT b30.01_4kaDVTc/lnd/hist/b30.01_4kaDVTc.clm2.ncrcat.ann.nc b30.00_4kaDVTd/lnd/hist/b30.00_4kaDVTd.clm2.decade.ann.nc b30.00_4kaDVTd/lnd/hist/b30.00_4kaDVTd.clm2.ncrcat.ann.nc
+Fri Jan 22 11:38:19 2010: ncrcat -O -x -v QREFHT b30.02_4kaDVT/lnd/hist/b30.02_4kaDVT.clm2.ncrcat.ann.nc b30.01_4kaDVTc/lnd/hist/b30.01_4kaDVTc.clm2.decade.ann.nc b30.01_4kaDVTc/lnd/hist/b30.01_4kaDVTc.clm2.ncrcat.ann.nc
+Fri Jan 22 06:32:58 2010: ncrcat -O -x -v QREFHT b30.03_2kaDVT/lnd/hist/b30.03_2kaDVT.clm2.ncrcat.ann.nc b30.02_4kaDVT/lnd/hist/b30.02_4kaDVT.clm2.decade.ann.nc b30.02_4kaDVT/lnd/hist/b30.02_4kaDVT.clm2.ncrcat.ann.nc
+Fri Jan 22 04:40:00 2010: ncrcat -O -x -v QREFHT b30.04_0kaDVT/lnd/hist/b30.04_0kaDVT.clm2.ncrcat.ann.nc b30.03_2kaDVT/lnd/hist/b30.03_2kaDVT.clm2.decade.ann.nc b30.03_2kaDVT/lnd/hist/b30.03_2kaDVT.clm2.ncrcat.ann.nc
+Fri Jan 22 01:29:37 2010: ncrcat -O -x -v QREFHT b30.05_0kaDVT/lnd/hist/b30.05_0kaDVT.clm2.ncrcat.ann.nc b30.04_0kaDVT/lnd/hist/b30.04_0kaDVT.clm2.decade.ann.nc b30.04_0kaDVT/lnd/hist/b30.04_0kaDVT.clm2.ncrcat.ann.nc
+Thu Jan 21 23:56:16 2010: ncrcat -O -x -v QREFHT b30.05_7kaDVT/lnd/hist/b30.05_7kaDVT.clm2.ncrcat.ann.nc b30.05_0kaDVT/lnd/hist/b30.05_0kaDVT.clm2.decade.ann.nc b30.05_0kaDVT/lnd/hist/b30.05_0kaDVT.clm2.ncrcat.ann.nc
+Thu Jan 21 20:31:25 2010: ncrcat -O -x -v QREFHT b30.06_2kaDVT/lnd/hist/b30.06_2kaDVT.clm2.ncrcat.ann.nc b30.05_7kaDVT/lnd/hist/b30.05_7kaDVT.clm2.decade.ann.nc b30.05_7kaDVT/lnd/hist/b30.05_7kaDVT.clm2.ncrcat.ann.nc
+Thu Jan 21 16:44:55 2010: ncrcat -O -x -v QREFHT b30.06_7kaDVT/lnd/hist/b30.06_7kaDVT.clm2.ncrcat.ann.nc b30.06_2kaDVT/lnd/hist/b30.06_2kaDVT.clm2.decade.ann.nc b30.06_2kaDVT/lnd/hist/b30.06_2kaDVT.clm2.ncrcat.ann.nc
+Thu Jan 21 02:27:28 2010: ncrcat -O -x -v QREFHT b30.07_2kaDVT/lnd/hist/b30.07_2kaDVT.clm2.ncrcat.ann.nc b30.06_7kaDVT/lnd/hist/b30.06_7kaDVT.clm2.decade.ann.nc b30.06_7kaDVT/lnd/hist/b30.06_7kaDVT.clm2.ncrcat.ann.nc
+Wed Jan 20 22:04:58 2010: ncrcat -O -x -v QREFHT b30.07_6kaDVT/lnd/hist/b30.07_6kaDVT.clm2.ncrcat.ann.nc b30.07_2kaDVT/lnd/hist/b30.07_2kaDVT.clm2.decade.ann.nc b30.07_2kaDVT/lnd/hist/b30.07_2kaDVT.clm2.ncrcat.ann.nc
+Wed Jan 20 17:50:08 2010: ncrcat -O -x -v QREFHT b30.08_0kaDVT/lnd/hist/b30.08_0kaDVT.clm2.ncrcat.ann.nc b30.07_6kaDVT/lnd/hist/b30.07_6kaDVT.clm2.decade.ann.nc b30.07_6kaDVT/lnd/hist/b30.07_6kaDVT.clm2.ncrcat.ann.nc
+Wed Jan 20 13:47:56 2010: ncrcat -O -x -v QREFHT b30.08_5kaDVT/lnd/hist/b30.08_5kaDVT.clm2.ncrcat.ann.nc b30.08_0kaDVT/lnd/hist/b30.08_0kaDVT.clm2.decade.ann.nc b30.08_0kaDVT/lnd/hist/b30.08_0kaDVT.clm2.ncrcat.ann.nc
+Wed Jan 20 05:41:35 2010: ncrcat -O -x -v QREFHT b30.08_7kaDVT/lnd/hist/b30.08_7kaDVT.clm2.ncrcat.ann.nc b30.08_5kaDVT/lnd/hist/b30.08_5kaDVT.clm2.decade.ann.nc b30.08_5kaDVT/lnd/hist/b30.08_5kaDVT.clm2.ncrcat.ann.nc
+Mon Jan 18 02:54:55 2010: ncrcat -O -x -v QREFHT b30.09_2kaDVT/lnd/hist/b30.09_2kaDVT.clm2.ncrcat.ann.nc b30.08_7kaDVT/lnd/hist/b30.08_7kaDVT.clm2.decade.ann.nc b30.08_7kaDVT/lnd/hist/b30.08_7kaDVT.clm2.ncrcat.ann.nc
+Thu Oct 15 22:43:53 2009: ncrcat -O -x -v QREFHT b30.09_7kaDVT/lnd/hist/b30.09_7kaDVT.clm2.ncrcat.ann.nc b30.09_2kaDVT/lnd/hist/b30.09_2kaDVT.clm2.decade.ann.nc b30.09_2kaDVT/lnd/hist/b30.09_2kaDVT.clm2.ncrcat.ann.nc
+Thu Oct 15 17:33:42 2009: ncrcat -O -x -v QREFHT b30.10_2kaDVT/lnd/hist/b30.10_2kaDVT.clm2.ncrcat.ann.nc b30.09_7kaDVT/lnd/hist/b30.09_7kaDVT.clm2.decade.ann.nc b30.09_7kaDVT/lnd/hist/b30.09_7kaDVT.clm2.ncrcat.ann.nc
+Thu Oct 15 09:18:32 2009: ncrcat -O -x -v QREFHT b30.10_8kaDVT/lnd/hist/b30.10_8kaDVT.clm2.ncrcat.ann.nc b30.10_2kaDVT/lnd/hist/b30.10_2kaDVT.clm2.decade.ann.nc b30.10_2kaDVT/lnd/hist/b30.10_2kaDVT.clm2.ncrcat.ann.nc
+Thu Oct 15 04:37:16 2009: ncrcat -O -x -v QREFHT b30.11_3kaDVT/lnd/hist/b30.11_3kaDVT.clm2.ncrcat.ann.nc b30.10_8kaDVT/lnd/hist/b30.10_8kaDVT.clm2.decade.ann.nc b30.10_8kaDVT/lnd/hist/b30.10_8kaDVT.clm2.ncrcat.ann.nc
+Wed Sep  2 04:34:16 2009: ncrcat -O -x -v QREFHT b30.11_7kaDVTa/lnd/hist/b30.11_7kaDVTa.clm2.ncrcat.ann.nc b30.11_3kaDVT/lnd/hist/b30.11_3kaDVT.clm2.decade.ann.nc b30.11_3kaDVT/lnd/hist/b30.11_3kaDVT.clm2.ncrcat.ann.nc
+Wed Sep  2 03:09:39 2009: ncrcat -O -x -v QREFHT b30.12_0kaDVTn/lnd/hist/b30.12_0kaDVTn.clm2.ncrcat.ann.nc b30.11_7kaDVTa/lnd/hist/b30.11_7kaDVTa.clm2.decade.ann.nc b30.11_7kaDVTa/lnd/hist/b30.11_7kaDVTa.clm2.ncrcat.ann.nc
+Wed Sep  2 02:53:56 2009: ncrcat -O -x -v QREFHT b30.12_5kaDVTn/lnd/hist/b30.12_5kaDVTn.clm2.ncrcat.ann.nc b30.12_0kaDVTn/lnd/hist/b30.12_0kaDVTn.clm2.decade.ann.nc b30.12_0kaDVTn/lnd/hist/b30.12_0kaDVTn.clm2.ncrcat.ann.nc
+Wed Sep  2 01:42:28 2009: ncrcat -O -x -v QREFHT b30.12_9kaDVTn/lnd/hist/b30.12_9kaDVTn.clm2.ncrcat.ann.nc b30.12_5kaDVTn/lnd/hist/b30.12_5kaDVTn.clm2.decade.ann.nc b30.12_5kaDVTn/lnd/hist/b30.12_5kaDVTn.clm2.ncrcat.ann.nc
+Tue Sep  1 22:12:08 2009: ncrcat -O -x -v QREFHT b30.13_1kaDVT/lnd/hist/b30.13_1kaDVT.clm2.ncrcat.ann.nc b30.12_9kaDVTn/lnd/hist/b30.12_9kaDVTn.clm2.decade.ann.nc b30.12_9kaDVTn/lnd/hist/b30.12_9kaDVTn.clm2.ncrcat.ann.nc
+Sun Aug  9 08:44:03 2009: ncrcat -O -x -v QREFHT b30.13_87kaDVT/lnd/hist/b30.13_87kaDVT.clm2.ncrcat.ann.nc b30.13_1kaDVT/lnd/hist/b30.13_1kaDVT.clm2.decade.ann.nc b30.13_1kaDVT/lnd/hist/b30.13_1kaDVT.clm2.ncrcat.ann.nc
+Sun Aug  9 08:28:20 2009: ncrcat -O -x -v QREFHT b30.14_35kaDVT/lnd/hist/b30.14_35kaDVT.clm2.ncrcat.ann.nc b30.13_87kaDVT/lnd/hist/b30.13_87kaDVT.clm2.decade.ann.nc b30.13_87kaDVT/lnd/hist/b30.13_87kaDVT.clm2.ncrcat.ann.nc
+Sun Aug  9 04:03:44 2009: ncrcat -O -x -v QREFHT b30.14_9kaDVT/lnd/hist/b30.14_9kaDVT.clm2.ncrcat.ann.nc b30.14_35kaDVT/lnd/hist/b30.14_35kaDVT.clm2.decade.ann.nc b30.14_35kaDVT/lnd/hist/b30.14_35kaDVT.clm2.ncrcat.ann.nc
+Sun Aug  9 03:50:42 2009: ncrcat -O -x -v QREFHT b30.15_0kaDVTd/lnd/hist/b30.15_0kaDVTd.clm2.ncrcat.ann.nc b30.14_9kaDVT/lnd/hist/b30.14_9kaDVT.clm2.decade.ann.nc b30.14_9kaDVT/lnd/hist/b30.14_9kaDVT.clm2.ncrcat.ann.nc
+Tue Oct 14 14:06:06 2008: ncrcat -O b30.16_0kaDVTd/lnd/hist/b30.16_0kaDVTd.clm2.ncrcat.ann.nc b30.15_0kaDVTd/lnd/hist/b30.15_0kaDVTd.clm2.decade.ann.nc b30.15_0kaDVTd/lnd/hist/b30.15_0kaDVTd.clm2.ncrcat.ann.nc
+Tue Oct 14 01:47:42 2008: ncrcat -O b30.17_0kaDVTd/lnd/hist/b30.17_0kaDVTd.clm2.ncrcat.ann.nc b30.16_0kaDVTd/lnd/hist/b30.16_0kaDVTd.clm2.decade.ann.nc b30.16_0kaDVTd/lnd/hist/b30.16_0kaDVTd.clm2.ncrcat.ann.nc
+Mon Oct 13 03:16:55 2008: ncrcat -O b30.17_5kaDVT/lnd/hist/b30.17_5kaDVT.clm2.ncrcat.ann.nc b30.17_0kaDVTd/lnd/hist/b30.17_0kaDVTd.clm2.decade.ann.nc b30.17_0kaDVTd/lnd/hist/b30.17_0kaDVTd.clm2.ncrcat.ann.nc
+Sun Oct 12 17:09:08 2008: ncrcat -O b30.18_4kaDVT/lnd/hist/b30.18_4kaDVT.clm2.ncrcat.ann.nc b30.17_5kaDVT/lnd/hist/b30.17_5kaDVT.clm2.decade.ann.nc b30.17_5kaDVT/lnd/hist/b30.17_5kaDVT.clm2.ncrcat.ann.nc
+Sun Oct 12 03:27:28 2008: ncrcat -O b30.18_5kaDVTa/lnd/hist/b30.18_5kaDVTa.clm2.ncrcat.ann.nc b30.18_4kaDVT/lnd/hist/b30.18_4kaDVT.clm2.decade.ann.nc b30.18_4kaDVT/lnd/hist/b30.18_4kaDVT.clm2.ncrcat.ann.nc
+Sat Oct 11 16:10:30 2008: ncrcat -O b30.19_0kaDVTa/lnd/hist/b30.19_0kaDVTa.clm2.ncrcat.ann.nc b30.18_5kaDVTa/lnd/hist/b30.18_5kaDVTa.clm2.decade.ann.nc b30.18_5kaDVTa/lnd/hist/b30.18_5kaDVTa.clm2.ncrcat.ann.nc
+Sat Oct 11 14:08:08 2008: ncrcat -O b30.20_0kaDVT/lnd/hist/b30.20_0kaDVT.clm2.ncrcat.ann.nc b30.19_0kaDVTa/lnd/hist/b30.19_0kaDVTa.clm2.decade.ann.nc b30.19_0kaDVTa/lnd/hist/b30.19_0kaDVTa.clm2.ncrcat.ann.nc
+Fri Oct 10 19:04:47 2008: ncrcat -O b30.22_0kaDVT/lnd/hist/b30.22_0kaDVT.clm2.decade.ann.nc b30.20_0kaDVT/lnd/hist/b30.20_0kaDVT.clm2.decade.ann.nc b30.20_0kaDVT/lnd/hist/b30.20_0kaDVT.clm2.ncrcat.ann.nc
+Wed Sep  3 18:32:54 2008: ncrcat -O -n 200,3,1 b30.22_0kaDVT.clm2.decade.ann.001.nc b30.22_0kaDVT.clm2.decade.ann.nc
+Wed Sep  3 17:21:13 2008: ncea -O b30.22_0kaDVT.clm2.decade.jan.001.nc b30.22_0kaDVT.clm2.decade.feb.001.nc b30.22_0kaDVT.clm2.decade.mar.001.nc b30.22_0kaDVT.clm2.decade.apr.001.nc b30.22_0kaDVT.clm2.decade.may.001.nc b30.22_0kaDVT.clm2.decade.jun.001.nc b30.22_0kaDVT.clm2.decade.jul.001.nc b30.22_0kaDVT.clm2.decade.aug.001.nc b30.22_0kaDVT.clm2.decade.sep.001.nc b30.22_0kaDVT.clm2.decade.oct.001.nc b30.22_0kaDVT.clm2.decade.nov.001.nc b30.22_0kaDVT.clm2.decade.dec.001.nc b30.22_0kaDVT.clm2.decade.ann.001.nc
+Wed Sep  3 17:21:03 2008: ncra -O b30.22_0kaDVT.clm2.h0.0001-01.nc b30.22_0kaDVT.clm2.h0.0002-01.nc b30.22_0kaDVT.clm2.h0.0003-01.nc b30.22_0kaDVT.clm2.h0.0004-01.nc b30.22_0kaDVT.clm2.h0.0005-01.nc b30.22_0kaDVT.clm2.h0.0006-01.nc b30.22_0kaDVT.clm2.h0.0007-01.nc b30.22_0kaDVT.clm2.h0.0008-01.nc b30.22_0kaDVT.clm2.h0.0009-01.nc b30.22_0kaDVT.clm2.decade.jan.001.nc
+created on 07/29/07 23:13:13
+  logname: fenghe
+  host: phoenix
+  source: Community Land Model: CLM2
+  version: $Name: ccsm3_0_1_beta22 $
+  revision_id: $Id: histFileMod.F90,v 1.19.4.48 2004/06/21 16:01:30 mvertens Exp $
+  case_title: b30.22_0kaDVT b30.22_0kaDVT
+  case_id: b30.22_0kaDVT
+  Surface_dataset: surface-data.096x048.nc
+  Initial_conditions_dataset: b30.LgmDV.clm2.i.1701-01-01-00000.nc
+  PFT_physiological_constants_dataset: pft-physiology
+  RTM_input_datset: rdirc.05
+  nco_openmp_thread_number: 1
+  NCO: 4.2.3
+
+-- dimensions --
+  levsoi: 10
+  lat: 48
+  lon: 96
+  time: 2204
+  hist_interval: 2
+  latrof: 360
+  levlak: 10
+  lonrof: 720
+
+-- coordinates --
+  lat  shape=(48,)  dtype=float32  range=[-87.1591, 87.1591]
+      long_name: coordinate latitude
+      units: degrees_north
+  latrof  shape=(360,)  dtype=float32  range=[-89.7500, 89.7500]
+      long_name: runoff coordinate latitude
+      units: degrees_north
+  levlak  shape=(10,)  dtype=float32  range=[0.0500, 44.7750]
+      long_name: coordinate lake levels
+      units: m
+  levsoi  shape=(10,)  dtype=float32  range=[0.0071, 2.8646]
+      long_name: coordinate soil levels
+      units: m
+  lon  shape=(96,)  dtype=float32  range=[0.0000, 356.2500]
+      long_name: coordinate longitude
+      units: degrees_east
+  lonrof  shape=(720,)  dtype=float32  range=[-179.7500, 179.7500]
+      long_name: runoff coordinate longitude
+      units: degrees_east
+  time  shape=(2204,)  dtype=float32  range=[-22.0000, 0.0300]
+      logname: time
+      units: ka BP
+      calendar: noleap
+
+-- time convention --
+  units              : ka BP
+  raw range          : [-22.000, 0.030]  (n=2204)
+  raw step           : median = 0.010, min = 0.010, max = 0.010
+  converted ka BP    : [-0.030, 22.000]
+
+-- variable: TSA --
+  dims    : ('time', 'lat', 'lon')
+  shape   : (2204, 48, 96)
+  dtype   : float32
+  attr long_name: 2m air temperature
+  attr units: K
+  attr cell_method: time: mean
+
+-- spatial grid --
+  detected lat coord: lat
+  detected lon coord: lon
+  lat range : [-87.159, 87.159]  resolution ≈ 3.7110°
+  lon range : [0.000, 356.250]  resolution ≈ 3.7500°  (convention: 0–360)
+
+==============================================================================
+DATASET: CHELSA-TraCE21k-centennial
+==============================================================================
+path     : /home/lghomeoffice/git/paleoclimate_model_comparison/data/CHELSA-TraCE21k-centennial/output/tasmean.nc
+variable : tasmean   (declared unit in df_air: K)
+
+-- global attributes --
+  CDI: Climate Data Interface version 2.5.0 (https://mpimet.mpg.de/cdi)
+  Conventions: CF-1.6
+  history: Thu May 14 17:00:31 2026: cdo expr,tasmean=(tasmin+tasmax)/2 -merge /home/lghomeoffice/git/paleoclimate_model_comparison/data/CHELSA-TraCE21k-centennial/output/tasmin.nc /home/lghomeoffice/git/paleoclimate_model_comparison/data/CHELSA-TraCE21k-centennial/output/tasmax.nc /home/lghomeoffice/git/paleoclimate_model_comparison/data/CHELSA-TraCE21k-centennial/output/tasmean.nc
+  CDO: Climate Data Operators version 2.5.0 (https://mpimet.mpg.de/cdo)
+
+-- dimensions --
+  time: 221
+  lat: 46
+  lon: 96
+
+-- coordinates --
+  time  shape=(221,)  dtype=float64  range=[0.0000, 8035335.0000]
+      standard_name: time
+      units: days since -20010-07-01 00:00:00.000000
+      calendar: proleptic_gregorian
+      axis: T
+  lon  shape=(96,)  dtype=float64  range=[-178.1251, 178.1249]
+      axis: X
+  lat  shape=(46,)  dtype=float64  range=[-86.6251, 82.1249]
+      axis: Y
+
+-- time convention --
+  units              : days since -20010-07-01 00:00:00.000000
+  raw range          : [0.000, 8035335.000]  (n=221)
+  raw step           : median = 36524.000, min = 36524.000, max = 36525.000
+  converted ka BP    : [0.000, 22.000]
+
+-- variable: tasmean --
+  dims    : ('time', 'lat', 'lon')
+  shape   : (221, 46, 96)
+  dtype   : float32
+
+-- spatial grid --
+  detected lat coord: lat
+  detected lon coord: lon
+  lat range : [-86.625, 82.125]  resolution ≈ 3.7500°
+  lon range : [-178.125, 178.125]  resolution ≈ 3.7500°  (convention: -180–180)
