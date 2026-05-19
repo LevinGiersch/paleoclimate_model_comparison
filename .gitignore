@@ -18,3 +18,5 @@
 *.run.xml
 *.synctex.gz
 *.toc
+
+PalMod2_credentials.txt
