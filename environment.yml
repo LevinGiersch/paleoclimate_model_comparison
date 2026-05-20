@@ -1,6 +1,10 @@
 name: palclim
 channels:
   - conda-forge
+  - defaults
+  - https://conda.anaconda.org/conda-forge
 dependencies:
   - cdo
-prefix: /home/lghomeoffice/miniforge3/envs/palclim
+  - cftime
+  - ipykernel
+prefix: /home/luser/.conda/envs/palclim
