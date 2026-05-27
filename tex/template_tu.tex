@@ -1,0 +1,96 @@
+% !TeX spellcheck = <none>
+\documentclass[12pt]{scrartcl}
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{geometry}
+\newgeometry{left=3cm, right=3cm, top=2.5cm, bottom=2.5cm}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage[backend=biber, style=authoryear, sorting=nty]{biblatex}
+
+\addbibresource{BibHEX.bib}
+
+\usepackage{mathptmx}
+\usepackage{times}
+
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Modulabschlussprüfung}
+\rhead{Levin Giersch}
+\rfoot{Seite \thepage}
+
+
+
+\begin{document}
+	\begin{titlepage}
+		\begin{figure}[h]
+			\centering
+			\includegraphics[width=\textwidth]{HU Logo Head.png}
+		\end{figure}
+		\centering
+		
+		\vspace{4cm}
+		\noindent
+		\textbf{\huge Titel}\\
+		
+		\vspace{1cm}
+		\textbf{\Large Titel}\\
+		
+		\vspace{1cm}
+		\textbf{\Large Titel}\\
+		
+		\vspace{4cm}
+		\begin{tabular}{ll}
+			\textbf{Name:} & Levin Giersch \\
+			\textbf{Matrikelnr.:} & 608661 \\
+			\textbf{E-Mail:} & gierschl@hu-berlin.de\\
+			\textbf{Fakultät:} & Mathematisch-Naturwissenschaftliche Fakultät\\
+			\textbf{Studiengang:} & Bachelor of Science Geography Monobachelor \\
+			\textbf{Datum:} & \today \\
+			\textbf{Dozierende:} & Professor
+		\end{tabular}
+		
+		\newpage
+		\tableofcontents
+		\thispagestyle{empty}
+		
+	\end{titlepage}
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%\newpage
+	\setcounter{page}{1}
+	\section*{Section}
+	\addcontentsline{toc}{section}{Section}
+	
+	Text
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\subsection*{Subsection}
+	\addcontentsline{toc}{subsection}{Subsection}
+	
+	Text
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\newpage
+	\pagestyle{empty}
+	\printbibliography
+	
+\end{document}
+
