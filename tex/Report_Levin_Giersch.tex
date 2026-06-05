@@ -75,11 +75,43 @@
 
 \begin{abstract}
 
+- paleoclimate simulations are very important for understanding earth systems
+- but they are distributed in diverse and sometimes incompatible formats
+	- different time orgigin and unit
+	- spatial grid
+	- conventions
+	- temperature variables
+	- time and spatial resolutions
+
+- this project provides a reproducable python toolchain to download preprocess, and compare temperatre archives for widely used datasets:
+	- TraCE-21k, 
+	- CHELSA-TraCE21k-centennial, 
+	- Beyer2020/2021
+	- PalMod2
+- harmonise to kiloyears-before-present (ka BP) scale
+- harmonise spatial grids
+- convert temp units to degree celsius
+- extract temperature at user-defined point (use berlin as example)
+
+- globally extract temperature of each dataset at each grid cell size of trace21k (most coarse), compare pair-wise
+
+
+- all models agree on cold period around 20 kaBP followed by 
+- but disagree in absolute temperature by several degrees.
+
+- tried to find pattern in differences between dataset pair: global maps plotting the temp difference between each dataset-pair:
+	- largest differences in high norther latitudes
+
+- this report documents datasets, data aquisition method, preprocessing, harmonisation, data extraction at point and global comparison
+
+- project is organized in several jupyter notebooks creating a full automatic pipeline \cite{giersch2026_paleoclimate_model_comparison}
 \end{abstract}
 
 %-------------------------------------------------------------
 
-\section{Intro}
+\section{Introduction}
+\subsection{Why comparing paleoclimate models matters}
+
 - Paleoclimate models are useful for:\\
 	- Reconstructing Earth's climate before direct measurements existed\\
 	- Understanding how the climate responds to forcings like solar output, volcanic eruptions, orbital cycles, and CO2\\
@@ -91,15 +123,30 @@
 
 - there are many different paleoclimate models.\\
 - coparing them is important to detect outliers, irregularities or strong differences eg. to help improve the models\\
+- it is interesting to see where they disagree by how much
+- systematic differences show where the models are robust and where they diverge
+
+\subsection{Aim of this project}
+- harmonise diverse and incompatible paleoclimate datasets
+- tool to extract temperature (air and soil) values at user difined point
+- plot temp values over timeseries
+- compare paleoclimate models pairwise globaly at resoulution of trace-21k grid size and plot results as map (mean temp differences)
+
 
 
 \section{The Data}
-- can be downloaded via data\_downloader.ipynb
+- four datasets
+| Dataset | Variables | Time coverage | Time step | Spatial resolution | Format |
+|---|---|---|---|---|---|
+| **Beyer2020** (v4) | air temp | 120–0 ka BP | 1–2 kyr | 0.5° | NetCDF |
+| **PalMod2** | air temp, soil temp | 25–0 ka BP | annual | ~3.75° (T31) | NetCDF |
+| **TraCE-21k** | air temp, soil temp | 22–0 ka BP | decadal | ~3.75° (T31) | NetCDF |
+| **CHELSA-TraCE21k-centennial** | air temp | 21–0 ka BP | 100 yr | ~1 km (0.01°) | GeoTIFF → NetCDF |
 
 \subsection{Trace21k}
 - Simulation of the Transient Climate of the Last 21,000 Years
 - Chosen Version: TraCE Main Land Decadal Average\\
-- developed by: see source \\
+- developed by: 2021 \\
 - year of development: see source\\
 - how where they made: fully-coupled, non-accelerated atmosphere-ocean-sea ice-land surface CCSM3 simulation\\
 - what was the goal: \\
@@ -131,8 +178,7 @@
 - resolution time: monthly averages, 100 year timesteps\\
 - extend space: global \\
 - resolution space: kilometer scale\\
-- source: \cite{chelsa_trace21k_paper}, \cite{chelsa_trace21k_data} \\
-- because of big filesize i download tasmax tiffs, convert to netcdf, compte decadal mean, delete the tifs and then do the same for tasmin
+- source: \cite{chelsa_trace21k_paper}, \cite{chelsa_trace21k_data}, \cite{chelsa_trace21k_paper}\\
 
 
 \subsection{Beyer 2021 (v4)}
@@ -151,7 +197,7 @@
 - resolution time: 2000-yr steps from 120000--22000 BP; 1000-yr steps from 22000 BP to pre-industrial (72 snapshots total)\\
 - extend space: global terrestrial (full 360° longitude; latitude coverage 720x 300 cells at 0.5°, i.e. 150° of latitude)\\
 - resolution space: 0.5° equirectangular grid (\textasciitilde55 km at the equator)\\
-- source: \cite{beyer2020_paper}, \cite{beyer2021_addendum}, \cite{beyer2021_data_4}\\
+- source: \cite{beyer2020_paper}, \cite{beyer2021_addendum}, \cite{beyer2021_data_4}, \cite{beyer2020_data_3}\\
 
 
 \subsection{PalMod 2}
@@ -172,6 +218,17 @@ tsl: (PMMXMCRTDGr111Lmtslgn30201, soil temperature by layer, monthly) \\
 - extend space: global\\
 - resolution space: atmosphere/land T31 (\textasciitilde3,75°), ocean MPIOM1.6 nominal \textasciitilde3°\\
 - source: \cite{palmod2_data}\\
+
+
+
+
+
+
+MADE A PAUSE HERE EVERYTING ABOVE IS CORRECT
+
+
+
+
 
 
 %-------------------------------------------------------------
