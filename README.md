@@ -11,7 +11,7 @@ A point-extraction and comparison tool for four heterogeneous paleoclimate datas
 | **TraCE-21k** | air temp, soil temp | 22–0 ka BP | decadal | ~3.75° (T31) | NetCDF |
 | **CHELSA-TraCE21k-centennial** | air temp | 21–0 ka BP | 100 yr | ~1 km (0.01°) | GeoTIFF → NetCDF |
 
-Total download size is approximately 800 GB (dominated by CHELSA).
+Total download size is approximately 1 TB (dominated by CHELSA).
 
 ## Notebooks
 
