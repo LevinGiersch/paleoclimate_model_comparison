@@ -1,0 +1,5 @@
+dataset,air var,soil var,temp unit,native averaging,time units attributes,raw time range,time conversion,spatial grid,lan lot convention,spatial resolution
+Beyer2020,temperature,-,°C,monthly average,years since present,"-120000, 0",-vals/1000,720*300,-180-180,0.5°
+PalMod2,tas,tsl,K,monthly average,days since 1-1-1,"181, 9130878",(max-vals)/365250,96*48,0-360,~3.71° / 3.75°
+Trace-21k,TSA,TSOI,K,decadal average,ka BP (stored negative),"-22, 0.03",-vals,96*48,0-360,~3.71° / 3.75°
+Chelsa-Trace-21k,tasmin / tasmax,-,K,centential monthly average,days since -20010-07-01,"0, 8035335",(max-vals)/365250,Global ~ 1km,-180-180,0.01°

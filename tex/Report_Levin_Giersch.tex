@@ -220,21 +220,35 @@ tsl: (PMMXMCRTDGr111Lmtslgn30201, soil temperature by layer, monthly) \\
 - source: \cite{palmod2_data}\\
 
 
+%-------------------------------------------------------------
+\section{Pre-processing}
+- trace-21k and beyer2020 are already analysis ready netcdfs, the do not have to be preprocessed
 
 
+\subsection{palmod2}
+- tas and tsl are delivered as monthly netcdf files
+- a annual mean has to be computed from the monthly values (cdo yearmean)
+- then merge all the files to a single netcdf file along time axis.
+- merged outputs have 25000 annual time steps
 
 
-MADE A PAUSE HERE EVERYTING ABOVE IS CORRECT
-
-
-
-
+\subsection{Chelsa tarce 21k}
+- data is provided as montly geotiffs
+- use regex on filenames to group files by year
+- stack and average the yearly tiffs
+- convert from kelvin * 10 to kelvin
+- concatenate along time axis
+- add metadata
+- write as gzip compressed netcdf files per variable (tasmin and tasmax)
+- compute tasmean from tasmin and tasmax
+- this process costs alot of time and compute power and disk space. ca 1tb disk space, several days computation on modern laptop. cdo usage not possible because of ram limitation so dask has to be used (lazy) \cite{giersch2026_paleoclimate_model_comparison}
 
 
 %-------------------------------------------------------------
 \section{Homogenization}
 \subsection{Variables}
-- which do i choose, are they directly comparable? \\
+- to compare the datasets thy have to share a common variable, time format, space and unit
+- homogenisation made in comparison notebook \cite{giersch2026_paleoclimate_model_comparison}
 
 \subsection{Time}
 - time extend \\
