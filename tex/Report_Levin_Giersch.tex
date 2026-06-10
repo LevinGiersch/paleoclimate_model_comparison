@@ -1,79 +1,44 @@
-% !TeX spellcheck = <none>
-\documentclass[12pt]{scrartcl}
-\usepackage[english]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage{csquotes}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{geometry}
-\newgeometry{left=3cm, right=3cm, top=3cm, bottom=3cm}
-\usepackage[onehalfspacing]{setspace}
-\usepackage{graphicx}
-\usepackage{caption}
-\usepackage{subcaption}
+% Version 2022-09-20
+% ISPRS full-paper template (isprs.cls) -- content: Levin Giersch project report
+% Requires isprs.cls and the bibliography file Bib.bib in the same folder.
+% Compile with: pdflatex -> bibtex -> pdflatex -> pdflatex
 
-\usepackage{textcomp}         % degree symbol etc.
-\usepackage{newunicodechar}   % map any stray Unicode code points
+\documentclass{isprs} % isprs class modified 23-04-2019 (Dennis Wittich)
+\usepackage{subfigure}
+\usepackage{setspace}
+\usepackage{geometry} % added 27-02-2014 Markus Englich
+\usepackage{epstopdf}
+\usepackage[labelsep=period]{caption}  % added 14-04-2016 Markus Englich - Recommendation by Sebastian Brocks
+\usepackage[british]{babel}
+\usepackage[hang]{footmisc}
+\def\footnotemargin{1em} % added 08-01-2020 Dennis Wittich
 
-\usepackage{amsmath}   % gives \tfrac, \dfrac, \eqref, etc.
-\usepackage{booktabs}   % for \toprule, \midrule, \bottomrule
-\usepackage{enumitem}   % enables [leftmargin=...] in itemize/description
+% --- added so the special characters in the report content render ---
+\usepackage{textcomp} % provides \textdegree
+\usepackage{amsmath}
+\usepackage{booktabs} % \toprule, \midrule, \bottomrule for the dataset table
+\usepackage{url} % defines \url, used by isprs.bst for web/DOI references
+% --------------------------------------------------------------------
 
+\geometry{a4paper, top=25mm, left=20mm, right=20mm, bottom=25mm, headsep=10mm, footskip=12mm} % added 27-02-2014 Markus Englich
 
-
-\usepackage[backend=biber, style=authoryear, sorting=nty]{biblatex}
-
-\addbibresource{Bib.bib}
-
-\usepackage{mathptmx}
-\usepackage{times}
-
-\usepackage{multicol}
-\setlength{\columnsep}{1cm}
-
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{}
-\lhead{}
-\rhead{Levin Damian Antonin Giersch}
-\rfoot{Page \thepage}
-
-
+\captionsetup{justification=centering,font=normal} % thanks to Niclas Borlin 05-05-2016
+\captionsetup[figure]{font=small} % added 23-04-2019 Dennis Wittich
+\captionsetup[table]{font=small} % added 23-04-2019 Dennis Wittich
 
 \begin{document}
-\begin{titlepage}
-	\centering
-	
-	\noindent
-	\textbf{\huge A harmonised point-extraction and comparison tool for heterogeneous paleoclimate datasets}\\
-	\vspace{2cm}
-	\textbf{\large Geoinformatics Project Report}\\
-	\vspace{8cm}
-	\begin{tabular}{ll}
-		\textbf{Name:} & Levin Giersch \\
-		\textbf{Student ID:} & 1690 0515040 \\
-		\textbf{E-Mail:} & l.giersch@campus.tu-berlin.de\\
-		\textbf{Faculty:} & Faculty VI - Planning Building Environment\\
-		\textbf{Program:} & Geodesy and Geoinformation Science, M.Sc. \\
-		\textbf{Date:} & \today \\
-		\textbf{Lecturer:} & Prof. Dr.-Ing. Martin Kada
-	\end{tabular}
-	
-	\newpage
-	\tableofcontents
-	\thispagestyle{empty}
-	
-\end{titlepage}
 
+\title{A harmonised point-extraction and comparison tool for heterogeneous paleoclimate datasets}
+\date{}
 
+\author{Levin Giersch}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\newpage
-\setcounter{page}{1}
-\section*{Abstract}
-\addcontentsline{toc}{section}{Abstract}
+\address{
+	Faculty VI - Planning Building Environment, Geodesy and Geoinformation Science, M.Sc. - l.giersch@campus.tu-berlin.de\\
+	Student ID: 1690 0515040, Date: \today, Lecturer: Prof. Dr.-Ing. Martin Kada
+}
 
-\begin{abstract}
+\abstract{
 
 - paleoclimate simulations are very important for understanding earth systems
 - but they are distributed in diverse and sometimes incompatible formats
@@ -84,8 +49,8 @@
 	- time and spatial resolutions
 
 - this project provides a reproducable python toolchain to download preprocess, and compare temperatre archives for widely used datasets:
-	- TraCE-21k, 
-	- CHELSA-TraCE21k-centennial, 
+	- TraCE-21k,
+	- CHELSA-TraCE21k-centennial,
 	- Beyer2020/2021
 	- PalMod2
 - harmonise to kiloyears-before-present (ka BP) scale
@@ -95,8 +60,7 @@
 
 - globally extract temperature of each dataset at each grid cell size of trace21k (most coarse), compare pair-wise
 
-
-- all models agree on cold period around 20 kaBP followed by 
+- all models agree on cold period around 20 kaBP followed by
 - but disagree in absolute temperature by several degrees.
 
 - tried to find pattern in differences between dataset pair: global maps plotting the temp difference between each dataset-pair:
@@ -105,7 +69,15 @@
 - this report documents datasets, data aquisition method, preprocessing, harmonisation, data extraction at point and global comparison
 
 - project is organized in several jupyter notebooks creating a full automatic pipeline \cite{giersch2026_paleoclimate_model_comparison}
-\end{abstract}
+}
+
+\keywords{Paleoclimate, Data harmonisation, TraCE-21k, CHELSA, PalMod2, Temperature comparison}
+
+\maketitle
+
+\pagestyle{plain} % page number centered at the bottom of every page
+
+\sloppy
 
 %-------------------------------------------------------------
 
@@ -118,7 +90,7 @@
 	- Testing and validating modern climate models against known past states\\
 	- Establishing the natural variability range of climate, separate from human influence\\
 	- Constraining climate sensitivity (temperature change per CO2 doubling)\\
-	- Studying planetary climate evolution — Mars, Venus, and other terrestrial bodies\\
+	- Studying planetary climate evolution -- Mars, Venus, and other terrestrial bodies\\
 	- Using past warm periods (e.g. Pliocene) as analogues for near-future climate projections\\
 
 - there are many different paleoclimate models.\\
@@ -136,12 +108,23 @@
 
 \section{The Data}
 - four datasets
-| Dataset | Variables | Time coverage | Time step | Spatial resolution | Format |
-|---|---|---|---|---|---|
-| **Beyer2020** (v4) | air temp | 120–0 ka BP | 1–2 kyr | 0.5° | NetCDF |
-| **PalMod2** | air temp, soil temp | 25–0 ka BP | annual | ~3.75° (T31) | NetCDF |
-| **TraCE-21k** | air temp, soil temp | 22–0 ka BP | decadal | ~3.75° (T31) | NetCDF |
-| **CHELSA-TraCE21k-centennial** | air temp | 21–0 ka BP | 100 yr | ~1 km (0.01°) | GeoTIFF → NetCDF |
+
+\begin{table*}[ht]
+\centering
+\footnotesize
+\begin{tabular}{llllll}
+\toprule
+Dataset & Variables & Time coverage & Time step & Spatial resolution & Format \\
+\midrule
+Beyer2020 (v4)              & air temp            & 120--0 ka BP & 1--2 kyr & 0.5\textdegree{}                       & NetCDF \\
+PalMod2                     & air temp, soil temp & 25--0 ka BP  & annual   & \textasciitilde3.75\textdegree{} (T31) & NetCDF \\
+TraCE-21k                   & air temp, soil temp & 22--0 ka BP  & decadal  & \textasciitilde3.75\textdegree{} (T31) & NetCDF \\
+CHELSA-TraCE21k-centennial  & air temp            & 21--0 ka BP  & 100 yr   & \textasciitilde1 km (0.01\textdegree{}) & GeoTIFF $\rightarrow$ NetCDF \\
+\bottomrule
+\end{tabular}
+\caption{Overview of the four paleoclimate datasets.}
+\label{tab:datasets}
+\end{table*}
 
 \subsection{Trace21k}
 - Simulation of the Transient Climate of the Last 21,000 Years
@@ -151,7 +134,7 @@
 - how where they made: fully-coupled, non-accelerated atmosphere-ocean-sea ice-land surface CCSM3 simulation\\
 - what was the goal: \\
 - nr. files: 2\\
-- size (gb): 449,2 MB\\
+- size (gb): 449,2 MB\\
 - type: netcdf\\
 - used variables: TSA, TSOI\\
 - how to get: (via python script in my data\_downloader.ipynb notebook)\\
@@ -195,8 +178,8 @@
 - other info: v4 adds global monthly NPP relative to v3; documented in the 2021 addendum\\
 - extend time: 120000 BP to pre-industrial modern era (0 BP)\\
 - resolution time: 2000-yr steps from 120000--22000 BP; 1000-yr steps from 22000 BP to pre-industrial (72 snapshots total)\\
-- extend space: global terrestrial (full 360° longitude; latitude coverage 720x 300 cells at 0.5°, i.e. 150° of latitude)\\
-- resolution space: 0.5° equirectangular grid (\textasciitilde55 km at the equator)\\
+- extend space: global terrestrial (full 360\textdegree{} longitude; latitude coverage 720x 300 cells at 0.5\textdegree{}, i.e. 150\textdegree{} of latitude)\\
+- resolution space: 0.5\textdegree{} equirectangular grid (\textasciitilde55 km at the equator)\\
 - source: \cite{beyer2020_paper}, \cite{beyer2021_addendum}, \cite{beyer2021_data_4}, \cite{beyer2020_data_3}\\
 
 
@@ -216,7 +199,7 @@ tsl: (PMMXMCRTDGr111Lmtslgn30201, soil temperature by layer, monthly) \\
 - extend time: 25000 BP to 0 BP (= 1950 CE)\\
 - resolution time: variable-dependent --- monthly for the standard atmosphere/land/ocean/sea-ice tables (Amon, Lmon, Omon, SImon, LImon, Emon), decadal (dec, Odec) and fixed (fx, Ofx); GLAC-1D ice-sheet/topography forcing updated every 10 years\\
 - extend space: global\\
-- resolution space: atmosphere/land T31 (\textasciitilde3,75°), ocean MPIOM1.6 nominal \textasciitilde3°\\
+- resolution space: atmosphere/land T31 (\textasciitilde3,75\textdegree{}), ocean MPIOM1.6 nominal \textasciitilde3\textdegree{}\\
 - source: \cite{palmod2_data}\\
 
 
@@ -282,11 +265,12 @@ tsl: (PMMXMCRTDGr111Lmtslgn30201, soil temperature by layer, monthly) \\
 - comparison can helt to find out where the differ the most -> conlusion to how to improve models? \\
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\pagestyle{empty}
-\printbibliography
+%-------------------------------------------------------------
+{
+	\begin{spacing}{1.17}
+		\normalsize
+		\bibliography{Bib} % your bibliography file Bib.bib; style is given in isprs.cls
+	\end{spacing}
+}
 
 \end{document}
-
