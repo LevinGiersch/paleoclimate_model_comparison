@@ -21,3 +21,5 @@ sources/
 *.toc
 
 PalMod2_credentials.txt
+
+data_exploration.ipynb
