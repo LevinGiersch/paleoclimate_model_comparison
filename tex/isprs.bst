@@ -35,6 +35,7 @@ ENTRY
     volume
     year
     url
+    doi
   }
   { field.used }
   { extra.label sort.label list.year }
@@ -853,6 +854,13 @@ FUNCTION {mastersthesis}
   fin.entry
 }
 
+FUNCTION {format.doi}
+{ doi empty$
+    { "" }
+    { "\url{https://doi.org/" doi * "}" * }
+  if$
+}
+
 FUNCTION {misc}
 { output.bibitem
   list.label.output
@@ -864,6 +872,8 @@ FUNCTION {misc}
   if$
   new.block
   howpublished output
+  new.block
+  format.doi output
   new.block
   note output
   fin.entry

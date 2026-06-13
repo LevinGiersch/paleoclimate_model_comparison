@@ -4,11 +4,11 @@
 % Compile with: pdflatex -> bibtex -> pdflatex -> pdflatex
 
 \documentclass{isprs} % isprs class modified 23-04-2019 (Dennis Wittich)
-\usepackage{subfigure}
 \usepackage{setspace}
 \usepackage{geometry} % added 27-02-2014 Markus Englich
 \usepackage{epstopdf}
 \usepackage[labelsep=period]{caption}  % added 14-04-2016 Markus Englich - Recommendation by Sebastian Brocks
+\usepackage{subcaption}                % multi-panel figures (supersedes the deprecated subfigure package)
 \usepackage[british]{babel}
 \usepackage[hang]{footmisc}
 \def\footnotemargin{1em} % added 08-01-2020 Dennis Wittich
@@ -17,7 +17,6 @@
 \usepackage{booktabs} % \toprule, \midrule, \bottomrule for the dataset table
 \usepackage{url} % defines \url, used by isprs.bst for web/DOI references
 \usepackage{pdflscape}
-\usepackage{booktabs}
 
 \graphicspath{{plots/}}
 
@@ -29,241 +28,295 @@
 \captionsetup[figure]{font=small} % added 23-04-2019 Dennis Wittich
 \captionsetup[table]{font=small} % added 23-04-2019 Dennis Wittich
 
+% --- float placement: many full-width figures/tables in two columns ---
+\setcounter{topnumber}{3}
+\setcounter{dbltopnumber}{3}
+\setcounter{totalnumber}{5}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\dbltopfraction}{0.92}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.7}
+\renewcommand{\dblfloatpagefraction}{0.7}
+
+% --- helper macros ---
+\newcommand{\dg}{\textdegree}
+\newcommand{\degC}{\textdegree C}
+\newcommand{\tabbr}[1]{\texttt{#1}}
+\newcommand{\kaBP}{ka\,BP}
+\setlength{\emergencystretch}{3em}
+
 \begin{document}
 
 \title{A harmonised point-extraction and comparison tool for heterogeneous paleoclimate datasets}
 \date{}
 
-\author{Levin Giersch}
+\author{Levin Damian Antonin Giersch}
 
 \address{
-	Faculty VI - Planning Building Environment, Geodesy and Geoinformation Science, M.Sc. - l.giersch@campus.tu-berlin.de\\
-	Student ID: 1690 0515040, Date: \today, Lecturer: Prof. Dr.-Ing. Martin Kada
+	\begin{tabular}{ll}
+	\textbf{Student ID:} & 0515040\\
+	\textbf{E-Mail:}     & l.giersch@campus.tu-berlin.de\\
+	\textbf{Faculty:}    & Faculty VI - Planning Building Environment\\
+	\textbf{Program:}    & Geodesy and Geoinformation Science, M.Sc.\\
+	\textbf{Lecturer:}   & Prof. Dr.-Ing. Martin Kada\\
+	\textbf{Date:}       & \today\\
+	\end{tabular}
 }
+
+
 
 \abstract{
-Paleoclimate simulations are central to understanding how the Earth system behaved before instrumental records existed, but the datasets that hold these simulations are published in formats that do not line up with one another. They use different time origins and units, different spatial grids and longitude conventions, different temperature variables, and different temporal and spatial resolutions. This makes even a simple side-by-side comparison awkward. This project provides a reproducible Python pipeline that downloads, preprocesses, and compares the near-surface temperature archives of four widely used datasets: Beyer2020/2021, PalMod2, TraCE-21k, and CHELSA-TraCE21k-centennial. The pipeline brings all four onto a common kiloyears-before-present (ka BP) time axis, resolves the differing spatial grids and longitude conventions, and converts every temperature field to degrees Celsius. From the harmonised data the tool extracts a temperature time series at any user-defined point, and it compares each pair of datasets globally by sampling every model on the shared coarse T31 grid and mapping the mean temperature difference per cell. At the example location the datasets agree on the broad shape of the deglaciation, a cold interval around 20 ka BP followed by warming into the Holocene, but they disagree on absolute temperature by several degrees. The global difference maps show that the disagreement is not random: it is largest at high northern latitudes and over high terrain, and smallest in the mid-latitude lowlands and the tropics. This report documents the four datasets, the acquisition method, the preprocessing and harmonisation steps, the point extraction, and the global comparison. The full pipeline is organised as a set of Jupyter notebooks \cite{giersch2026_paleoclimate_model_comparison}.
+Transient paleoclimate simulations and reconstructions are indispensable for understanding how the Earth system responds to forcing, yet they are distributed in mutually incompatible formats. Each archive uses a different time origin and unit, a different spatial grid and longitude convention, a different temperature variable, and a different temporal and spatial resolution. This project develops a small, reproducible Python toolchain that downloads four widely used temperature archives covering the last glacial cycle, namely TraCE-21k, CHELSA-TraCE21k-centennial, Beyer2020/2021 and PalMod2. It harmonises their time axes onto a common kiloyears-before-present (\kaBP) scale, reconciles their spatial grids, converts all temperatures to degrees Celsius, and then extracts and compares temperature time series at an arbitrary point as well as globally through pairwise mean-difference heatmaps. Applied to an example location in northern Germany ($\approx 53.26\dg$\,N, $11.67\dg$\,E), the four archives agree on the first-order signal, a cold Last Glacial Maximum (LGM) followed by deglacial warming into the Holocene, but disagree on absolute temperature by several degrees, with the largest systematic divergences at high northern latitudes. The report documents the datasets, the acquisition and pre-processing pipeline, the harmonisation methods and the results, and discusses why these archives are difficult to compare and what the comparison reveals.
 }
 
-\keywords{Paleoclimate, Data harmonisation, TraCE-21k, CHELSA, PalMod2, Temperature comparison}
+\keywords{Paleoclimate, Data harmonisation, Paleoclimate datasets, Temperature comparison, TraCE-21k, CHELSA-TraCE21k, PalMod2, Beyer2020}
 
 \maketitle
 
-\pagestyle{plain} % page number centered at the bottom of every page
+\pagestyle{plain}
 
 \sloppy
 
 %-------------------------------------------------------------
 
 \section{Introduction}
-\subsection{Why comparing paleoclimate models matters}
 
-Paleoclimate models reconstruct the state of the climate for periods that predate direct measurement. They are used to study how the climate responds to forcings such as solar output, volcanic eruptions, orbital cycles, and atmospheric CO\textsubscript{2}, and they provide the natural variability baseline against which recent, human-driven change is judged. The same simulations help constrain climate sensitivity, the temperature change expected per doubling of CO\textsubscript{2}, and past warm intervals are sometimes used as rough analogues for near-future projections. Methods developed for terrestrial paleoclimate also carry over to the climate evolution of other planetary bodies.
+\subsection{Why paleoclimate models matter}
+Instrumental temperature records span at most the last $\sim$170 years, far too short to characterise the full range of natural climate variability or to observe the slow processes (ice-sheet growth and decay, ocean-circulation reorganisations, orbital forcing) that govern the climate system on millennial timescales. Numerical paleoclimate simulations and data-constrained reconstructions extend our knowledge of temperature across the last glacial cycle and beyond. They are useful for: reconstructing Earth's climate before direct measurements existed; understanding how the climate responds to forcings such as solar output, volcanic eruptions, orbital (Milankovi\'c) cycles, greenhouse gases and changing ice sheets; testing and validating modern climate models against known past states; establishing the natural variability range of climate, separate from human influence; constraining climate sensitivity (the temperature change per CO\textsubscript{2} doubling) using the large glacial-interglacial signal; and using past warm periods as analogues for near-future projections.
 
-Because there are many such models, and because they are built from different physics, forcings, and resolutions, it is useful to compare them directly. A comparison shows where the models agree, which is a sign that a feature is robust, and where they diverge, which flags the regions and quantities that are still poorly constrained. Outliers and systematic offsets between models are exactly the kind of signal that motivates a closer look at a particular model or region.
+\subsection{Why intercompare models}
+No single archive is ``correct''. Coupled general-circulation models (GCMs) such as those behind TraCE-21k and PalMod2 simulate the physics explicitly but at coarse resolution; statistical reconstructions and downscaling products such as Beyer2020 and CHELSA-TraCE21k achieve high spatial resolution by anchoring model output to present-day observations, at the cost of the assumptions built into the downscaling. Comparing them is therefore important: systematic differences reveal where the archives are robust and where they diverge, expose outliers and artefacts, and help target the processes or regions where the underlying models most need improvement. A comparison cannot say which archive is right, but it can say where and by how much they disagree.
 
-\subsection{Aim of this project}
+\subsection{Aim and scope}
+The aim of this project is a harmonised point-extraction and comparison tool for four heterogeneous paleoclimate temperature archives. Given a latitude and longitude, the tool extracts a near-surface air-temperature (and, where available, soil-temperature) time series from each archive, reconciles their incompatible time axes, spatial grids and units, and produces (i) per-dataset inspection reports, (ii) a temperature time-series overlay at the requested point, (iii) a side-by-side summary of temporal coverage and the grid cell each archive returns near the point, and (iv) global pairwise mean-difference heatmaps. The workflow is organised as three Jupyter notebooks: a downloader, a pre-processor, and the comparison and exploration notebook \cite{giersch2026_paleoclimate_model_comparison}.
 
-The aim of this project is narrow and practical. It is to take four diverse and individually incompatible paleoclimate datasets and make them directly comparable, then to build a small tool on top of the harmonised data that does two things. First, it extracts a temperature time series, air or soil, at a point chosen by the user and plots all available datasets on one axis. Second, it compares the datasets pairwise across the whole globe, sampling each one on the resolution of the coarse T31 grid shared by two of the models, and presents the mean temperature differences as maps. The project does not attempt to judge which model is correct. It documents the differences and shows where they concentrate.
+\subsection{Study area and example point}
+All point-based results below are shown for a single terrestrial location in northern Germany ($\approx 53.26\dg$\,N, $11.67\dg$\,E, south-western Mecklenburg, near the lower Elbe), internally labelled \tabbr{022\_00TG}. The location is used purely as a worked example; the tool accepts any coordinate. It is mid-latitude, continental and ice-free throughout the studied interval, which makes it a convenient case for examining how the four archives represent the deglacial warming at one place.
 
 \section{The data}
+Four archives were selected to span the trade-off between temporal resolution, spatial resolution and time coverage. Two are raw transient GCM simulations (TraCE-21k, PalMod2); two are high-resolution, observation-anchored products (Beyer2020/2021, CHELSA-TraCE21k). Table~\ref{tab:overview} summarises them. All are downloaded via the \tabbr{data\_downloader} notebook; the total download is on the order of 1\,TB (about 800\,GB of free disk is recommended), dominated by the $\sim$1\,km CHELSA GeoTIFFs.
 
-The comparison uses four datasets, summarised in Table~\ref{tab:datasets}. They were chosen because they overlap in time over the last deglaciation while differing in almost every technical respect, which makes them a good stress test for a harmonisation pipeline. Two of them, PalMod2 and TraCE-21k, also provide soil temperature, so the tool handles that variable as well.
-
-\begin{table*}[ht]
+\begin{table*}[t]
 \centering
-\footnotesize
-\begin{tabular}{llllll}
+\small
+\begin{tabular}{lllllll}
 \toprule
-Dataset & Variables & Time coverage & Time step & Spatial resolution & Format \\
+Dataset           & Type                        & Variables   & Coverage     & Time step  & Native res.           & Unit \\
 \midrule
-Beyer2020 (v4)              & air temp            & 120--0 ka BP & 1--2 kyr & 0.5\textdegree{}                       & NetCDF \\
-PalMod2                     & air temp, soil temp & 25--0 ka BP  & annual   & \textasciitilde3.75\textdegree{} (T31) & NetCDF \\
-TraCE-21k                   & air temp, soil temp & 22--0 ka BP  & decadal  & \textasciitilde3.75\textdegree{} (T31) & NetCDF \\
-CHELSA-TraCE21k-centennial  & air temp            & 22--0 ka BP  & 100 yr   & \textasciitilde1 km (0.01\textdegree{}) & GeoTIFF $\rightarrow$ NetCDF \\
+TraCE-21k         & Coupled GCM (CCSM3)         & TSA, TSOI   & 22--0 \kaBP  & decadal    & T31 ($\sim$3.75\dg)   & K \\
+PalMod2           & Coupled GCM (MPI-ESM1.2-CR) & tas, tsl    & 25--0 \kaBP  & annual     & T31 ($\sim$3.71\dg)   & K \\
+Beyer2020/21 (v4) & Downscaled reconstruction   & temperature & 120--0 \kaBP & 2/1 kyr    & 0.5\dg{}              & \degC \\
+CHELSA-TraCE21k   & Downscaled product          & tasmean     & 22--0 \kaBP  & centennial & $\sim$1\,km (30\,arcsec) & K \\
 \bottomrule
 \end{tabular}
-\caption{Overview of the four paleoclimate datasets used in the comparison.}
-\label{tab:datasets}
+\caption{Overview of the four temperature archives.}
+\label{tab:overview}
 \end{table*}
 
 \subsection{TraCE-21k}
-
-TraCE-21k is a transient simulation of the climate of the last 21,000 years \cite{trace21k_data}. It was produced with the Community Climate System Model version 3 (CCSM3) as a fully coupled, non-accelerated atmosphere, ocean, sea-ice, and land-surface run, so the simulation integrates forward in real model years from the Last Glacial Maximum to the recent past rather than stepping between equilibrium snapshots. The version used here is the main land decadal-average product, which stores ten-year means on the coarse T31\_gx3 grid. Two variables are taken from it: \texttt{TSA}, the 2 m near-surface air temperature from the CLM2 land component, and \texttt{TSOI}, the soil temperature by layer. The two files together are roughly 450 MB. Time runs from about 22 ka BP to the present in 2204 decadal steps.
-
-\subsection{CHELSA-TraCE21k}
-
-CHELSA-TraCE21k-centennial is a high-resolution downscaling of TraCE-21k \cite{chelsa_trace21k_paper,chelsa_trace21k_data}. It was generated with the CHELSA V1.2 algorithm, which reconstructs a paleo-orography for each time step and then applies lapse-rate and orographic-precipitation downscaling, producing monthly climatologies at roughly 1 km resolution (0.01\textdegree{}, a global grid of $43200 \times 20880$ cells) in 100-year steps since the Last Glacial Maximum. The dataset is distributed as monthly GeoTIFFs of \texttt{tasmin} and \texttt{tasmax}, with temperature stored as Kelvin multiplied by ten. For this project the two variables are averaged into a mean air temperature, $\mathrm{tasmean} = (\mathrm{tasmin} + \mathrm{tasmax})/2$. Because the dataset inherits its large-scale signal from TraCE-21k but adds a separate bias-correction and downscaling step, it is a useful test of whether the fine-scale product still resembles its coarse parent when both are sampled on the same grid. Time covers roughly 22 ka BP to the present in 221 centennial steps.
-
-\subsection{Beyer2020 / 2021}
-
-The Beyer dataset is a high-resolution reconstruction of terrestrial climate, bioclimate, and vegetation for the last 120,000 years, produced by Beyer, Krapp, and Manica at the University of Cambridge \cite{beyer2020_paper,beyer2021_addendum}. It fills the gap between paleoclimate products that have good temporal resolution but coarse grids and those that have fine grids but only cover a handful of snapshots. The reconstruction combines medium-resolution HadCM3 transient simulations with high-resolution HadAM3H snapshots and present-day observations, using a two-stage variant of the Delta method to downscale and bias-correct the fields to a 0.5\textdegree{} equirectangular grid (about 55 km at the equator). Gridded fields are provided at 2000-year steps between 120 and 22 ka BP and at 1000-year steps from 22 ka BP to the pre-industrial present, giving 72 snapshots in total. The version used here is v4 on figshare \cite{beyer2021_data_4,beyer2020_data_3}, which adds global monthly net primary productivity relative to v3 and is documented in the 2021 addendum. The single bundled NetCDF stores monthly mean temperature in degrees Celsius, which makes it the only one of the four already in the target unit. Of the bundled variables, only \texttt{temperature} (air) is used.
-
-\subsection{PalMod2}
-
-PalMod2 is a transient simulation of the last deglaciation run with the Max Planck Institute Earth System Model version 1.2 in its coarse-resolution configuration, MPI-ESM1-2-CR \cite{palmod2_data}. The atmosphere is the ECHAM6.3 spectral model at T31 (96 by 48 longitude and latitude cells, 31 vertical levels), coupled to the MPIOM ocean, the JSBACH land model, and a sea-ice model, with time-evolving ice sheets, topography, and land-sea mask prescribed from GLAC-1D reconstructions. The specific product is the r1i1p1f1 realisation of the transient deglaciation experiment with prescribed GLAC-1D ice sheets. Two monthly variables are used: \texttt{tas}, near-surface air temperature (dataset id \texttt{PMMXMCRTDGr111Amtasgn30201}), and \texttt{tsl}, soil temperature by layer (\texttt{PMMXMCRTDGr111Lmtslgn30201}). The data are served from the World Data Center for Climate (WDCC) at DKRZ and downloaded with the \texttt{jblob} client after registration \cite{wdcc_jblob}. Both variables are stored in Kelvin. Time runs from about 25 ka BP to the present at monthly resolution, which the pipeline reduces to 25,000 annual means.
-
-\section{Data acquisition}
-
-All four datasets are fetched by a single notebook, \texttt{data\_downloader.ipynb}, so that the whole archive can be reconstructed from scratch on any machine. Each source needs a slightly different access method, and the notebook keeps them in one place.
-
-TraCE-21k is downloaded from NCAR by reading a list of file URLs and keeping only the \texttt{TSA} and \texttt{TSOI} variables. Beyer2020 is fetched through the figshare API: the notebook queries version 4 of article \texttt{12293345} for its file list and downloads the bundled NetCDF. CHELSA is the largest source by far. Its file URLs are read from an EnviDat path list, filtered to \texttt{tasmin} and \texttt{tasmax}, and downloaded in parallel with a 32-worker thread pool, since the full set of monthly GeoTIFFs is large and download-bound. PalMod2 is the most involved: it requires a WDCC account, and the \texttt{jblob} command-line client is driven through \texttt{pexpect} to handle the interactive login, after which the \texttt{tas} and \texttt{tsl} archives are pulled to a temporary path and moved into the data layout. The total download is dominated by CHELSA and reaches roughly 1 TB.
-
-\section{Pre-processing}
-
-TraCE-21k and Beyer2020 arrive as analysis-ready NetCDF files and need no preprocessing. The other two do, and the work is done in \texttt{data\_processer.ipynb}.
-
-\subsection{PalMod2}
-
-PalMod2 \texttt{tas} and \texttt{tsl} are delivered as many monthly NetCDF files inside tar archives. For each file the pipeline computes an annual mean with \texttt{cdo yearmean}, collapsing twelve monthly values into one yearly value, and then merges all of the yearly files along the time axis with \texttt{cdo mergetime} into a single output per variable. The merged air-temperature file has 25,000 annual time steps. The CDO calls are run from inside the extraction directory using relative file names, which avoids a path-handling problem caused by spaces in the original data directory.
+TraCE-21k (the ``Simulation of the Transient Climate of the Last 21,000 Years'', here the TraCE Main Land Decadal Average product) is a fully coupled, non-accelerated atmosphere-ocean-sea-ice-land-surface transient simulation produced with the Community Climate System Model version 3 (CCSM3), its land component being the Community Land Model 2 (CLM2). It integrates forward from the LGM under transient orbital, greenhouse-gas, ice-sheet and meltwater forcing and is one of the foundational transient deglaciation experiments. The atmosphere and land grid is T31\_gx3 ($\sim$3.75\dg, 96 longitudes $\times$ 48 latitudes). The used variables are TSA (2\,m air temperature) and TSOI (soil temperature on 10 layers), delivered as 2 NetCDF files of $\approx$449\,MB; time runs from 22 \kaBP{} to present as decadal averages (2204 steps). Access is via the NCAR GDEX archive (dataset d651050); variable codes are listed in the TraCE variable table.\footnote{\url{http://ccrlab21.aos.wisc.edu/~fenghe/pub/CCSM3_TraCE_simulations_complete_list.html}} Source: \cite{trace21k_data}.
 
 \subsection{CHELSA-TraCE21k}
+CHELSA-TraCE21k is a high-resolution ($\sim$1\,km) downscaled product of transient temperature and precipitation since the LGM, generated with the CHELSA-TraCE21k downscaling model \cite{chelsa_trace21k_paper,chelsa_trace21k_data}. The centennial variant used here provides monthly climatologies at 100-year time steps, at a native resolution of $\sim$1\,km (30\,arcsec, $\approx 0.0083\dg$), globally. The used variables are \tabbr{tasmax} and \tabbr{tasmin}; the mean air temperature is derived as $\mathrm{tasmean} = (\mathrm{tasmax}+\mathrm{tasmin})/2$. The data arrive as GeoTIFF (one raster per month, per time index, per variable) and must be converted to NetCDF; coverage is 22 \kaBP{} to present in centennial steps (221 time steps). The $\sim$1\,km tiffs dominate the download. Source: \cite{chelsa_trace21k_paper}; data \cite{chelsa_trace21k_data}.
 
-CHELSA needs the most work. The monthly GeoTIFFs are first grouped by year using a regular expression on the filenames, which encode the month and a CHELSA time index; the index is mapped to a calendar year with the anchor that index 20 corresponds to 1990 CE and each step is 100 years. For each year the twelve monthly tiles are stacked and averaged, rescaled from Kelvin times ten to Kelvin with a factor of 0.1, and tagged with a July-1 timestamp. The yearly slices are concatenated along time, given metadata, and written as one gzip-compressed NetCDF per variable. A separate step then computes \texttt{tasmean} as the mean of \texttt{tasmin} and \texttt{tasmax}.
+\subsection{Beyer 2021 (v4)}
+Beyer2020 (figshare article 12293345; the version-4 / ``2021'' update is used) reconstructs high-resolution terrestrial climate, bioclimate and vegetation for the last 120,000 years, produced at the Department of Zoology, University of Cambridge \cite{beyer2020_paper,beyer2021_addendum}. It was built by a delta-method downscaling and bias-correction procedure that combines medium-resolution transient HadCM3 simulations with high-resolution HadAM3H time-slice snapshots and present-day observational climatology, bridging the gap between high-temporal-resolution but coarse simulations and high-spatial-resolution but snapshot-only datasets. The used variable is \tabbr{temperature} (monthly mean, \degC), delivered as a single bundled NetCDF on a 0.5\dg{} equirectangular grid ($720\times300$, $\sim$55\,km at the equator), global terrestrial only (latitudes $\approx 60\dg$\,S to $90\dg$\,N). Coverage is 120 \kaBP{} to pre-industrial in 72 snapshots, with 2000-year steps from 120--22 \kaBP{} and 1000-year steps from 22--0 \kaBP. The v4 release adds global monthly NPP relative to v3, documented in the 2021 addendum. Source: \cite{beyer2020_paper}, \cite{beyer2021_addendum} and \cite{beyer2021_data_4}.
 
-This stage is the bottleneck of the whole pipeline. At full 1 km resolution the intermediate data run to about 1 TB of disk and several days of computation on a modern laptop. CDO cannot be used here because the arrays do not fit in memory, so the processing is built on \texttt{xarray} and \texttt{rioxarray} with Dask, which keeps the computation lazy and streams it chunk by chunk to disk. The chunk size, $4500 \times 2250$ pixels, sets the peak memory use, and the number of Dask workers is capped to keep that bounded \cite{giersch2026_paleoclimate_model_comparison}.
+\subsection{PalMod 2}
+PalMod2 here denotes the MPI-M MPI-ESM1-2-CR Transient Simulations of the Last Deglaciation with prescribed ice sheets from GLAC-1D reconstructions (r1i1p1f1), produced at the Max Planck Institute for Meteorology and DKRZ \cite{palmod2_data}. It is a fully coupled transient simulation with MPI-ESM1.2 in coarse resolution (MPI-ESM1.2-CR): the ECHAM6.3 spectral atmosphere at T31 ($96\times48$, 31 levels), the JSBACH3.20 land surface, and the MPIOM1.63 ocean ($\sim$300\,km), with realistic time-evolving ice-sheet, topography and land-sea-mask forcing from GLAC-1D. The used variables are \tabbr{tas} (near-surface, usually 2\,m, air temperature; \texttt{PMMXMCRTDGr111\allowbreak Amtasgn30201}) and \tabbr{tsl} (soil temperature by layer; \texttt{PMMXMCRTDGr111\allowbreak Lmtslgn30201}), both monthly, in K; the native time coverage is the last $\sim$25\,kyr. Access is through the WDCC archive at DKRZ, downloaded via the \tabbr{jblob} client after registration \cite{wdcc_jblob}; model output is licensed CC-BY-SA 4.0. Source: \cite{palmod2_data}.
 
-\section{Harmonisation}
+\subsection{Data acquisition}
+Each archive uses a different access mechanism (Table~\ref{tab:acq}). PalMod2 is the only one requiring authentication: a WDCC account must be created (registration may take several days) and the \tabbr{jblob} client obtained from the WDCC site. The downloader skips files that already exist, so it is safe to re-run.
 
-To compare the datasets they have to share a common variable, time format, spatial reference, and unit. The harmonisation is implemented in the comparison notebook \cite{giersch2026_paleoclimate_model_comparison} and is applied on the fly when data are read, so the large source files are never rewritten.
-
-\subsection{Variables and units}
-
-Each dataset is described by a small registry that records, for every temperature field, its file path, the variable name inside the file, and its native unit. The air-temperature registry covers all four datasets; the soil-temperature registry covers only PalMod2 and TraCE-21k. Three of the four datasets store temperature in Kelvin, while Beyer2020 uses degrees Celsius, so the reader subtracts 273.15 from the Kelvin sources and leaves Beyer unchanged. All output is in degrees Celsius. Where a dataset carries a seasonal cycle, the twelve monthly values are averaged to an annual mean before anything else, and where a soil variable has several depth layers, the topmost layer is taken.
-
-\subsection{Time}
-
-The time axis is the hardest part, because every file uses a different convention, summarised in Table~\ref{tab:time}. A single helper, \texttt{time\_to\_ka\_bp}, normalises all four to kiloyears before present with the past positive and the present at zero, so that everything downstream can treat them uniformly. Beyer stores years since present with the past as negative values, which become ka BP by dividing by minus 1000. TraCE stores values already labelled ka BP but written as negative kiloyears, so they are simply negated. PalMod2 and CHELSA store days since a calendar reference date that runs forward toward the present; for these the absolute reference is irrelevant, and the conversion anchors on the most recent sample and turns the elapsed days into kiloyears. That last step is accurate to about half a kiloyear, which is invisible on the time axis used here.
-
-The four datasets also differ greatly in temporal resolution and coverage. Beyer reaches the furthest back, to 120 ka BP, but in coarse steps of 1000 to 2000 years (72 samples). PalMod2 is annual (25,000 samples over 25 ka), TraCE is decadal (2204 samples over 22 ka), and CHELSA is centennial (221 samples over 22 ka). Any pairwise comparison is therefore restricted to the overlapping time window of the two datasets involved.
-
-\begin{table*}[ht]
+\begin{table*}[t]
 \centering
-\footnotesize
-\begin{tabular}{llll}
+\small
+\begin{tabular}{lll}
 \toprule
-Dataset & Raw time units & Raw range & Conversion to ka BP \\
+Dataset & Host & Mechanism \\
 \midrule
-Beyer2020 & \texttt{years since present} (past negative)       & $[-120000,\ 0]$      & $-\mathrm{vals}/1000$ \\
-PalMod2   & \texttt{days since 1-1-1} (forward to present)     & $[181,\ 9\,130\,878]$ & $(\max - \mathrm{vals})/365250$ \\
-TraCE-21k & \texttt{ka BP} (stored negative)                   & $[-22,\ 0.03]$       & $-\mathrm{vals}$ \\
-CHELSA    & \texttt{days since -20010-07-01} (forward)         & $[0,\ 8\,035\,335]$  & $(\max - \mathrm{vals})/365250$ \\
+TraCE-21k        & NCAR GDEX (d651050)   & Direct HTTP; filtered to TSA/TSOI. \\
+CHELSA-TraCE21k  & EnviDat / SwitchCH S3 & Parallel download (32 threads), atomic \tabbr{.part} rename. \\
+Beyer2020/2021   & figshare API          & Query API for version 4 of article 12293345. \\
+PalMod2          & WDCC / DKRZ           & \tabbr{jblob} client, login automated via \tabbr{pexpect}. \\
 \bottomrule
 \end{tabular}
-\caption{Native time conventions of the four datasets and the conversion applied by \texttt{time\_to\_ka\_bp} to bring them onto a common ka BP axis (past positive, present zero).}
+\caption{Acquisition mechanism per dataset.}
+\label{tab:acq}
+\end{table*}
+
+\section{Pre-processing}
+Two of the four archives cannot be used as delivered. The \tabbr{data\_processer} notebook performs the necessary conversions; TraCE-21k and Beyer2020 are already analysis-ready NetCDF and are passed through unchanged.
+
+\subsection{CHELSA: GeoTIFF to centennial-mean NetCDF}
+The CHELSA centennial product arrives as one GeoTIFF per month, per time index, per variable, named \tabbr{CHELSA\_TraCE21k\_<var>\_<MM>\_<TTT>\_V.1.0.tif}, where \tabbr{MM} is the month and \tabbr{TTT} a centennial time index. The processor first groups files by year: a regex extracts month and index, and the index is mapped to a calendar year by $\mathrm{year} = 1990 - (20 - \mathrm{TTT})\times100$, anchored at $\mathrm{TTT}=20 \rightarrow 1990$\,CE with 100-year steps. Thus index 0 maps to about year $-10$\,CE and index $-200$ to about $-20010$\,CE ($\approx 22$ \kaBP, near the LGM). This mapping is consistent with the file's \tabbr{frequency=centennial} metadata, the $\sim$21,000-year nominal coverage and the file count (221 steps $\times$ 100 years $\approx 22$\,kyr); the exact index-to-year table is not published by CHELSA, so the mapping is a well-constrained reconstruction, flagged as such in the notebook. For each year the 12 monthly rasters are stacked and averaged to one (lat, lon) field; CHELSA stores temperature as Kelvin $\times$ 10, so a factor of 0.1 is applied and the result cast back to \tabbr{float32}. All years are concatenated along a new time axis (one timestamp at 1~July of each year), tagged with CF-style metadata, and written as one gzip-compressed NetCDF per variable at the full native $\sim$1\,km resolution. Finally $\mathrm{tasmean} = (\mathrm{tasmin}+\mathrm{tasmax})/2$ is derived.
+
+Because the full-resolution inputs are very large (on the order of $\sim$100\,GB each), every step before the write is lazy: only a Dask task graph is built. Data are materialised chunk by chunk during \tabbr{to\_netcdf}, so peak memory is set by the chunk size ($4500\times2250\times4$ bytes $\approx 40$\,MB) times the number of workers, not by the full array. The \tabbr{astype("float32")} after each floating-point operation is deliberate: multiplying by a Python float upcasts to float64, and casting back keeps the data at 4 bytes per pixel.
+
+\subsection{PalMod2: monthly to annual means and merge}
+The PalMod2 \tabbr{tas} and \tabbr{tsl} variables are delivered as monthly NetCDF files (250 per variable). For each variable the processor applies \tabbr{cdo yearmean} to collapse the 12 monthly values of each file into annual means, then \tabbr{cdo mergetime} to concatenate all annual-mean files along the time axis. To keep CDO from ever seeing the space-containing project path, the commands run from within the extraction directory using relative filenames. The merged outputs have 25,000 annual time steps.
+
+\section{Homogenisation}
+The four archives cannot be compared until they share a common footing in variable, time, space and unit. This is the analytical core of the project, performed in the comparison notebook.
+
+\subsection{Variables}
+The comparison restricts itself to near-surface air temperature (and, separately, soil temperature), the only quantities common to enough archives to be comparable. Even so the variables are not strictly identical (Table~\ref{tab:vars}): TraCE \tabbr{TSA} and PalMod2 \tabbr{tas} are model 2\,m air temperatures; Beyer \tabbr{temperature} is a downscaled, bias-corrected monthly mean; CHELSA \tabbr{tasmean} is the mean of downscaled daily extremes. These are physically close but not interchangeable, a caveat carried into the results. For soil temperature, only PalMod2 and TraCE provide a layered variable; the comparison keeps the topmost soil layer (for TraCE, \tabbr{levsoi}[0] $\approx 0.007$\,m).
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{lllll}
+\toprule
+Dataset & Air var. & Soil var. & Unit & Native averaging \\
+\midrule
+Beyer2020 & temperature & --              & \degC & monthly $\rightarrow$ annual \\
+PalMod2   & tas         & tsl (layer)     & K     & monthly $\rightarrow$ annual \\
+TraCE-21k & TSA         & TSOI (layer)    & K     & decadal average \\
+CHELSA    & tasmean     & --              & K     & centennial clim. \\
+\bottomrule
+\end{tabular}
+\caption{Temperature variables harmonised.}
+\label{tab:vars}
+\end{table*}
+
+\subsection{Time}
+Every archive encodes time differently (different origin, sign convention and unit), so a single function, \tabbr{time\_to\_ka\_bp}, centralises the translation to a common scale of kiloyears before present, with the past positive and the present at zero (Table~\ref{tab:time}). For the two ``days since'' archives the absolute reference date is irrelevant: only the elapsed time before the most recent sample matters, so the conversion anchors on \tabbr{vals.max()} and divides by $365250 = 1000\times365.25$ days ($=1$\,kyr in a proleptic-Gregorian calendar). The $\sim$0.5\,ka rounding this can introduce is invisible on a 0--125\,ka axis. After conversion the four archives span, respectively, 0--120\,ka (Beyer), 0--25\,ka (PalMod2) and 0--22\,ka (TraCE, CHELSA) BP. The temporal resolution also differs by three orders of magnitude (annual, decadal, centennial and 1--2\,kyr), which directly affects how much high-frequency variability each archive exposes.
+
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{llll}
+\toprule
+Dataset & \tabbr{units} attribute & Raw range & Conversion \\
+\midrule
+Beyer2020 & \tabbr{years since present} (past negative)   & $[-120000,\,0]$       & $-\mathrm{vals}/1000$ \\
+PalMod2   & \tabbr{days since 1-1-1} (forward to present) & $[181,\,9\,130\,878]$ & $(\max-\mathrm{vals})/365250$ \\
+TraCE-21k & \tabbr{ka BP} (stored negative)               & $[-22,\,0.03]$        & $-\mathrm{vals}$ \\
+CHELSA    & \tabbr{days since -20010-07-01} (forward)     & $[0,\,8\,035\,335]$   & $(\max-\mathrm{vals})/365250$ \\
+\bottomrule
+\end{tabular}
+\caption{Time-axis conventions and conversion to \kaBP.}
 \label{tab:time}
 \end{table*}
 
 \subsection{Space}
+The archives sit on four grids (Table~\ref{tab:space}) and use two longitude conventions (0--360\dg{} and $-180$--180\dg). The tool detects latitude and longitude coordinates by name and, before any query, converts a requested negative longitude to 0--360\dg{} when the file demands it. The spatial-resolution mismatch is severe: a single PalMod2 or TraCE cell ($\sim$3.7\dg) is roughly 250\,km $\times$ 410\,km at 53\dg\,N, whereas a CHELSA pixel (0.0083\dg) is about 1\,km and a Beyer cell (0.5\dg) about 55\,km. PalMod2 and TraCE share the same T31 grid, so their cells coincide exactly.
 
-The spatial grids are equally varied. Beyer is a 0.5\textdegree{} grid on the $-180$ to $180$ longitude convention. PalMod2 and TraCE share the coarse T31 grid, 96 by 48 cells at about 3.71\textdegree{} latitude by 3.75\textdegree{} longitude, on the 0 to 360 convention. CHELSA is a 0.01\textdegree{} grid on the $-180$ to $180$ convention. Two issues follow. First, the longitude convention has to be reconciled before any query, so the reader adds 360 to a negative requested longitude whenever the file uses the 0 to 360 range. Second, the cell that a given point falls into is found by nearest-neighbour selection (\texttt{xarray.sel(method="nearest")}), which means the same requested point returns cells of very different size depending on the dataset, and not always the same geographic centre. The T31 grid also has cells whose latitude width is not exactly constant, a feature of the underlying Gaussian grid.
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{llllll}
+\toprule
+Dataset & Grid & Lat range & Lon range & Convention & Res. \\
+\midrule
+Beyer2020 & $720\times300$         & $-59.75\dg \ldots 89.75\dg$ & $-179.75\dg \ldots 179.75\dg$ & $-180$--180 & 0.5\dg \\
+PalMod2   & $96\times48$ (Gaussian) & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$ & 0--360 & $\sim$3.71/3.75\dg \\
+TraCE-21k & $96\times48$           & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$ & 0--360 & $\sim$3.71/3.75\dg \\
+CHELSA    & global $\sim$1\,km     & global & global & $-180$--180 & 0.0083\dg \\
+\bottomrule
+\end{tabular}
+\caption{Spatial grids (authoritative native resolutions).}
+\label{tab:space}
+\end{table*}
+
+\subsection{Units}
+PalMod2, TraCE-21k and CHELSA store temperature in kelvin; Beyer2020 in degrees Celsius. All extracted series are converted to \degC{} (subtracting 273.15\,K where required) before plotting or differencing, so every figure is in a single, intuitive unit.
 
 \section{Point extraction}
+The function \tabbr{extract\_temperature\_at\_point} returns a 1-D temperature series (in \degC, on the \kaBP{} axis) for one file at a requested coordinate. It (i) opens the file without decoding times; (ii) selects the nearest grid cell with \tabbr{xarray.sel(method="nearest")} after translating the requested longitude into the file's convention, a plain nearest-neighbour lookup with no interpolation, recording the actual cell-centre coordinates; (iii) collapses extra dimensions (keeps the topmost soil layer if a depth dimension is present, averages a month dimension to an annual mean); and (iv) converts kelvin to \degC{} when needed. The same logic underlies the summary plots, so the text report, the time-series overlay and the grid-cell map cannot disagree about which cell was used.
 
-Point extraction opens one file, selects the grid cell nearest to the requested latitude and longitude, collapses any seasonal cycle to an annual mean, takes the topmost layer for soil temperature, converts Kelvin to Celsius if needed, and returns the resulting one-dimensional series on the ka BP axis. Because the selection is nearest-neighbour rather than interpolation, the value returned is the native cell value, with no smoothing across cells. This is a deliberate choice: it keeps each dataset's own representation intact, at the cost that a coarse dataset is represented at a point by a single large cell while a fine dataset is represented by a small one. The same routine drives both the time-series plot and the global difference maps, so the two cannot drift apart.
+\section{Inter-model comparison method}
+Beyond the single-point series, the tool produces global pairwise mean-difference heatmaps. For a pair of archives $A$ and $B$: (1) a \emph{shared time window} is computed from the two time axes (their overlap), read cheaply from the time coordinate alone, so both means cover the same interval; (2) a \emph{common sampling grid} is used, namely every cell centre of the TraCE-21k grid ($96\times48 = 4608$ points), and for each archive the temperature at each point is read with a vectorised nearest-neighbour index, averaged over the shared window and converted to \degC; (3) the difference $A-B$ is drawn on a PlateCarree world map with the diverging PRGn colormap and a TwoSlopeNorm centred at zero (green $=A$ warmer, purple $=A$ colder), and cells where either archive has no data (for example ocean cells for the terrestrial Beyer and CHELSA archives) remain blank.
+
+Because the shared sampling grid is the \emph{coarse} TraCE grid, the high-resolution archives (Beyer at 0.5\dg, CHELSA at $\sim$1\,km) are effectively sub-sampled, one representative pixel per $\sim$3.7\dg{} cell, rather than area-averaged into the coarse cell. This keeps the heatmaps fast and memory-bounded but means they compare \emph{point samples}, not area means (see Section~\ref{sec:caveats}). The point-extraction time-series plots, by contrast, use each archive at its native resolution; in particular CHELSA is read at its full $\sim$1\,km grid, so the returned CHELSA cell matches the requested point to within one $\sim$1\,km pixel ($\approx 0.0083\dg$).
 
 \section{Results}
 
-\subsection{An example point}
-
-Figure~\ref{fig:ts_all} overlays the four air-temperature series at an example location in northern Germany, 53.26\textdegree{}N, 11.67\textdegree{}E. The legend reports the actual cell each dataset returned, and the cells differ: Beyer returns 53.25\textdegree{}N, 11.75\textdegree{}E, the coarse T31 grid of PalMod2 and TraCE snaps to 53.81\textdegree{}N, 11.25\textdegree{}E, and CHELSA returns 53.25\textdegree{}N, 11.67\textdegree{}E. This is the resolution effect made visible.
-
-\begin{figure*}[htbp]
+\subsection{Air-temperature time series at the example point}
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.96\textwidth]{ts_air_all.png}
-\caption{Air-temperature time series at 53.26\textdegree{}N, 11.67\textdegree{}E for all four datasets on a common ka BP axis. The datasets agree on the deglacial warming but differ in absolute temperature, in temporal smoothness, and in the grid cell each one samples (see legend).}
-\label{fig:ts_all}
+\includegraphics[width=0.98\textwidth]{ts_air_all.png}
+\caption{Near-surface air-temperature time series at $\approx 53.26\dg$\,N, $11.67\dg$\,E (\kaBP{} on the $x$-axis, \degC{} on the $y$-axis), for all four archives. Each legend entry reports the grid-cell centre returned by the nearest-neighbour lookup.}
+\label{fig:ts_air}
 \end{figure*}
 
-Two things stand out. The datasets agree on the shape of the deglaciation: a cold interval around 20 to 22 ka BP, near or below minus 10\textdegree{}C at this site for the deglacial models, followed by warming into the Holocene. They disagree on the absolute Holocene temperature by several degrees. Beyer, PalMod2, and CHELSA settle near 8 to 9\textdegree{}C, while TraCE settles around 3\textdegree{}C, making it the cold outlier here. The series also differ in smoothness, which is a direct consequence of their temporal resolution: Beyer is smooth because it has only one value per one to two thousand years, whereas the annual, decadal, and centennial series carry visible year-to-year and century-to-century variability.
+Figure~\ref{fig:ts_air} shows that Beyer2020 (blue), the only archive spanning the full 120\,kyr, reproduces the expected glacial-interglacial structure: a warm last interglacial ($\sim$9\,\degC{} around 120\,ka), a long oscillating cooling, a cold interval around the LGM (dropping to $\approx -4$\,\degC{} near 20--25\,ka), and deglacial warming to $\sim$8--9\,\degC{} in the Holocene; its 1--2\,kyr step makes the curve smooth. PalMod2 (orange) and TraCE-21k (green) begin near the LGM and, at their native annual and decadal resolution, expose large high-frequency variability. CHELSA (red) tracks the deglacial warming at centennial resolution and reaches the warmest late-Holocene values here. In the overlapping window the four agree on the shape of the signal but disagree on absolute temperature by several degrees; most conspicuously, TraCE-21k settles to a noticeably cooler Holocene plateau ($\sim$3\,\degC) than the other three ($\sim$7--9\,\degC), an offset of order 4--5\,\degC{} that recurs in the heatmaps below. Part of the offset is a scale artefact: the coarse GCMs return a $\sim$3.7\dg{} cell centred at $\sim$53.8\dg\,N, 11.25\dg\,E, which averages a large, partly maritime region, whereas Beyer and CHELSA resolve the land point itself.
 
-The companion summary, Figure~\ref{fig:coverage_all}, makes the coverage and resolution differences explicit. The left panel shows each dataset's temporal extent and median step on a symmetric-log axis, and the right panel draws, at true size, the grid cell each dataset returns near the requested point. The contrast between the small Beyer and CHELSA cells and the large shared T31 cell of PalMod2 and TraCE is the clearest single illustration of why a naive comparison is misleading.
-
-\begin{figure*}[htbp]
+\subsection{Soil-temperature time series at the example point}
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.96\textwidth]{coverage_air_all.png}
-\caption{Left: temporal coverage and median time step of each dataset (note the very different sample counts $n$). Right: the grid cell each dataset returns near 53.26\textdegree{}N, 11.67\textdegree{}E, drawn at its true size in degrees; the red star is the requested point. The T31 cell of PalMod2 and TraCE dwarfs the Beyer and CHELSA cells.}
-\label{fig:coverage_all}
+\includegraphics[width=0.98\textwidth]{ts_soil_palmod2_trace21k.png}
+\caption{Top-layer soil-temperature time series at the example point for PalMod2 and TraCE-21k (the only two archives with a soil variable).}
+\label{fig:ts_soil}
 \end{figure*}
 
-PalMod2 and TraCE are worth singling out, because they sit on the identical T31 cell at this point (53.81\textdegree{}N, 11.25\textdegree{}E in both legends). They track each other closely through the deglaciation but separate after about 10 ka BP, with PalMod2 holding several degrees warmer than TraCE through the Holocene (Figure~\ref{fig:ts_all}). Since the two share the same grid cell, this gap is a genuine model difference and not an artefact of resolution or location.
+The soil comparison (Fig.~\ref{fig:ts_soil}) mirrors the air signal: both archives warm through the deglaciation, with PalMod2 again showing much larger interannual spread and abrupt multi-millennial steps and a warmer Holocene soil temperature ($\sim$6--8\,\degC) than TraCE ($\sim$4\,\degC, smoother). The systematic warm offset of PalMod2 relative to TraCE echoes the air-temperature relationship and the high-latitude divergence seen globally.
 
-\subsection{Global pairwise differences}
+\subsection{Temporal coverage and the returned grid cells}
+These summary panels (Figs.~\ref{fig:cov_air}--\ref{fig:cov_soil}) make the harmonisation challenge concrete. The coverage panel shows the three-order-of-magnitude spread in time step (Beyer $\Delta t \approx 2000$\,yr, $n=72$; PalMod2 $\approx 1$\,yr, $n=25000$; TraCE $\approx 10$\,yr, $n=2204$; CHELSA $\approx 100$\,yr, $n=221$) and the very different coverage windows. The grid-cell panel shows the spatial-scale mismatch directly: the PalMod2 and TraCE cells ($\sim$3.7\dg, overlapping exactly) form one large rectangle spanning much of northern Germany and the western Baltic, the Beyer cell (0.5\dg) is small, and the CHELSA cell (0.0083\dg) is effectively a point. The coarse cells visibly straddle land and sea, which biases their temperature relative to the high-resolution land-only archives.
 
-A single point cannot show whether these offsets are local or systematic, so the tool repeats the comparison everywhere. For each pair of datasets it samples both on the cell centres of the shared T31 grid, 96 by 48 = 4608 cells, averages each over the time window the two share, and maps the per-cell difference. The maps use a diverging green-to-purple scale on which green means the first-named dataset is warmer, purple means it is colder, and white means the two agree. Sampling everything on the coarse T31 grid means that for the fine datasets, Beyer and CHELSA, each large cell is represented by a single nearest-neighbour point rather than an area average, which is a limitation discussed below.
-
-The six air-temperature pairings are shown in Figures~\ref{fig:diff_beyer_palmod} to \ref{fig:diff_trace_chelsa}. A consistent pattern runs through all of them. The differences are small over the mid-latitude lowlands and the tropics, and they grow large at high northern latitudes, over the Arctic, Scandinavia, Siberia, and Greenland, and over high terrain such as the Tibetan Plateau and the Andes. In other words, the datasets agree most where the climate is mild and the terrain is simple, and disagree most where it is cold or mountainous, which are also the regions where ice-sheet history, elevation, and the choice of near-surface variable matter most.
-
-\begin{figure*}[htbp]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{diff_air_beyer2020_palmod2.png}
-\caption{Mean air-temperature difference Beyer2020 minus PalMod2, averaged over the shared 0--25 ka BP window. Beyer is colder (purple) than PalMod2 across the high northern latitudes and warmer (green) over the Tibetan Plateau, central Asia, and parts of South America.}
-\label{fig:diff_beyer_palmod}
+\includegraphics[width=0.98\textwidth]{coverage_air_all.png}
+\caption{Air archives. Left: temporal coverage (bar length $=$ covered interval; annotation $=$ time step and number of samples). Right: the grid cell each archive returns near the example point, drawn at its true size in degrees, over a regional basemap.}
+\label{fig:cov_air}
 \end{figure*}
 
-The individual pairings refine this picture. Beyer minus PalMod2 (Figure~\ref{fig:diff_beyer_palmod}) shows Beyer colder over the Arctic and northern Eurasia and warmer over high terrain. Beyer minus TraCE (Figure~\ref{fig:diff_beyer_trace}) is green across almost the whole northern hemisphere, meaning Beyer is warmer than TraCE nearly everywhere at mid to high latitudes, which is the global counterpart of the cold TraCE outlier seen at the example point.
-
-\begin{figure*}[htbp]
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{diff_air_beyer2020_trace21k.png}
-\caption{Mean air-temperature difference Beyer2020 minus TraCE-21k over 0--22 ka BP. Beyer is warmer than TraCE (broad green) across the northern hemisphere mid and high latitudes, consistent with TraCE being the cold outlier.}
-\label{fig:diff_beyer_trace}
+\includegraphics[width=0.98\textwidth]{coverage_soil_palmod2_trace21k.png}
+\caption{As Fig.~\ref{fig:cov_air}, for the two soil archives (PalMod2, TraCE-21k).}
+\label{fig:cov_soil}
 \end{figure*}
 
-Beyer minus CHELSA (Figure~\ref{fig:diff_beyer_chelsa}) is the opposite sign at high latitudes: Beyer is colder than CHELSA (purple) over the Arctic and northern Europe. This is notable because CHELSA is downscaled from TraCE, yet sampled on the T31 grid it behaves quite differently from its parent. The TraCE minus CHELSA map (Figure~\ref{fig:diff_trace_chelsa}) confirms this directly: TraCE is colder than CHELSA (purple) over most of the northern high latitudes. The downscaling and bias-correction steps that produce CHELSA therefore do not simply reproduce the coarse TraCE field; at the cell centres compared here CHELSA is systematically warmer in the north.
+\subsection{Global pairwise difference heatmaps}
+The difference maps are computed on the shared $96\times48 = 4608$-cell TraCE grid described in Section~\ref{sec:caveats}.
 
-\begin{figure*}[htbp]
+\paragraph{Soil temperature.} PalMod2 is markedly warmer than TraCE-21k across the high northern latitudes (northern Eurasia and North America, locally by $\sim$10--15\,\degC), with smaller patches where PalMod2 is cooler (Fig.~\ref{fig:diff_soil}). The dominant signal is a systematic high-latitude divergence between the two GCMs.
+
+\begin{figure*}[t]
 \centering
-\includegraphics[width=0.92\textwidth]{diff_air_beyer2020_chelsatrace21k.png}
-\caption{Mean air-temperature difference Beyer2020 minus CHELSA-TraCE21k over 0--22 ka BP. Beyer is colder than CHELSA (purple) over the high northern latitudes, the opposite sign to the Beyer minus TraCE map.}
-\label{fig:diff_beyer_chelsa}
-\end{figure*}
-
-Among the deglacial models, PalMod2 minus TraCE (Figure~\ref{fig:diff_palmod_trace}) shows PalMod2 warmer than TraCE (green) across the high northern latitudes, with smaller patches of the opposite sign over central Asia and the Tibetan Plateau. This is the spatial generalisation of the Holocene gap seen at the example point in Figure~\ref{fig:ts_all}. PalMod2 minus CHELSA (Figure~\ref{fig:diff_palmod_chelsa}) is more mixed and speckled, without a single dominant sign, which fits CHELSA being warmer than TraCE while PalMod2 is also warmer than TraCE, so the two warm models land closer to each other.
-
-\begin{figure*}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{diff_air_palmod2_trace21k.png}
-\caption{Mean air-temperature difference PalMod2 minus TraCE-21k over 0--22 ka BP. PalMod2 is warmer (green) across the high northern latitudes, with localised colder patches over central Asia and the Tibetan Plateau.}
-\label{fig:diff_palmod_trace}
-\end{figure*}
-
-\begin{figure*}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{diff_air_palmod2_chelsatrace21k.png}
-\caption{Mean air-temperature difference PalMod2 minus CHELSA-TraCE21k over 0--22 ka BP. The pattern is mixed, without a single dominant sign, reflecting that both PalMod2 and CHELSA are warmer than TraCE.}
-\label{fig:diff_palmod_chelsa}
-\end{figure*}
-
-\begin{figure*}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{diff_air_trace21k_chelsatrace21k.png}
-\caption{Mean air-temperature difference TraCE-21k minus CHELSA-TraCE21k over 0--22 ka BP. TraCE is colder than its own downscaled product CHELSA (purple) across most of the northern high latitudes.}
-\label{fig:diff_trace_chelsa}
-\end{figure*}
-
-The same comparison for soil temperature, available only for PalMod2 and TraCE, is shown in Figure~\ref{fig:diff_soil}. The spatial pattern mirrors the air-temperature pairing of the same two models: PalMod2 has warmer soils than TraCE across the high northern latitudes and cooler soils over central Asia and the Tibetan Plateau. That the soil and air differences share a pattern is a basic consistency check, since the two variables are physically linked.
-
-\begin{figure*}[htbp]
-\centering
-\includegraphics[width=0.92\textwidth]{diff_soil_palmod2_trace21k.png}
-\caption{Mean soil-temperature difference PalMod2 minus TraCE-21k over 0--22 ka BP. The spatial pattern follows the air-temperature pairing of the same two models, a consistency check between the two physically linked variables.}
+\includegraphics[width=0.72\textwidth]{diff_soil_palmod2_trace21k.png}
+\caption{Mean top-layer soil-temperature difference, PalMod2 $-$ TraCE-21k, averaged over the shared 0--22\,\kaBP{} window (green $=$ PalMod2 warmer, purple $=$ PalMod2 colder).}
 \label{fig:diff_soil}
 \end{figure*}
 
-Taken together, the maps support the conclusion drawn from the single point. The datasets agree on the large-scale story of the deglaciation but differ by several degrees in absolute temperature, and those differences are concentrated at high northern latitudes and over high terrain rather than spread evenly across the globe.
+\paragraph{Air temperature, all six pairs.} The four air archives yield six pairwise comparisons (Fig.~\ref{fig:diff_air}), each averaged over the shared window noted in the panel. The maps show that Beyer is generally warmer than PalMod2 across the tropics and mid-latitudes but markedly colder over the high-northern continents (Fig.~\ref{fig:diff_air}a); Beyer is warmer than TraCE almost everywhere, most strongly over northern Eurasia (Fig.~\ref{fig:diff_air}b); Beyer and CHELSA, the two observation-anchored products, are the most similar pair, with only faint differences (Fig.~\ref{fig:diff_air}c); the two GCMs differ strongly and coherently, PalMod2 much warmer than TraCE at high northern latitudes and cooler over the Southern Ocean margin (Fig.~\ref{fig:diff_air}d); PalMod2 $-$ CHELSA is moderate and patchy (Fig.~\ref{fig:diff_air}e); and TraCE is colder than CHELSA across most land, again strongest in the high north (Fig.~\ref{fig:diff_air}f).
 
-\section{Discussion and limitations}
+\begin{figure*}[t]
+\centering
+\begin{subfigure}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{diff_air_beyer2020_palmod2.png}\caption{Beyer2020 $-$ PalMod2 (0--25\,ka).}\end{subfigure}\hfill
+\begin{subfigure}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{diff_air_beyer2020_trace21k.png}\caption{Beyer2020 $-$ TraCE-21k (0--22\,ka).}\end{subfigure}
 
-A few caveats should temper the maps. The comparison samples every dataset by nearest-neighbour at the centres of the coarse T31 cells, so the fine grids of Beyer and CHELSA are reduced to one point per large cell instead of being averaged over the cell area. In rugged terrain that single point can sit at an elevation far from the cell mean, which inflates the apparent difference exactly in the regions, mountains and ice margins, where the disagreement is already largest. An area-weighted aggregation of the fine grids onto the T31 cells would be the more defensible comparison and would likely shrink some of the extreme values. The time anchoring for the two day-count datasets is also approximate to about half a kiloyear, and the pairwise windows differ because the datasets cover different spans, so the averages behind each map are not all taken over the same period. None of these undermines the main finding, that the disagreement is structured and concentrated, but they do caution against reading the precise magnitude in any single cell too literally.
+\vspace{3pt}
+\begin{subfigure}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{diff_air_beyer2020_chelsatrace21k.png}\caption{Beyer2020 $-$ CHELSA (0--22\,ka).}\end{subfigure}\hfill
+\begin{subfigure}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{diff_air_palmod2_trace21k.png}\caption{PalMod2 $-$ TraCE-21k (0--22\,ka).}\end{subfigure}
+
+\vspace{3pt}
+\begin{subfigure}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{diff_air_palmod2_chelsatrace21k.png}\caption{PalMod2 $-$ CHELSA (0--22\,ka).}\end{subfigure}\hfill
+\begin{subfigure}{0.49\textwidth}\centering\includegraphics[width=\linewidth]{diff_air_trace21k_chelsatrace21k.png}\caption{TraCE-21k $-$ CHELSA (0--22\,ka).}\end{subfigure}
+\caption{Mean air-temperature differences for all six pairs of the four archives (green $=$ first archive warmer, purple $=$ colder), sampled at the TraCE grid and averaged over each pair's shared time window.}
+\label{fig:diff_air}
+\end{figure*}
+
+\paragraph{Summary.} Three robust patterns emerge: (1) TraCE-21k runs systematically cool relative to all three other archives, most strongly at high northern latitudes and at the example point; (2) the two coupled GCMs differ most, in a spatially coherent high-latitude dipole, indicating structural model differences rather than noise; (3) the two observation-anchored products agree most closely, reflecting their shared present-day observational baseline.
+
+\section{Discussion}
+
+\subsection{Sources of inter-model difference}
+The differences arise from several superimposed causes that the comparison cannot fully disentangle: (i) \emph{model physics and forcing}, since CCSM3 and MPI-ESM1.2-CR are independent models with different components, resolutions and deglacial forcing, so their large coherent high-latitude differences are genuine; (ii) \emph{downscaling and bias correction}, since Beyer and CHELSA are anchored to present-day observations, which pulls their late-Holocene values toward a common baseline and explains why they agree best, while the raw GCMs can deviate strongly, especially over ice-marginal high latitudes; (iii) \emph{variable definition}, since a model 2\,m diagnostic, a downscaled monthly mean and the mean of downscaled daily extremes are close but not the same quantity; (iv) \emph{spatial-scale mismatch}, since a $\sim$3.7\dg{} cell averages a region that may mix land and ocean, whereas a $\sim$1\,km pixel resolves one landscape; and (v) \emph{temporal resolution}, since annual to millennial sampling exposes very different amounts of variability.
+
+\subsection{Limitations and caveats}\label{sec:caveats}
+\textbf{Nearest-neighbour sampling.} Both the point extraction and the heatmaps use nearest-neighbour selection with no interpolation or area weighting; in the heatmaps the high-resolution archives are sub-sampled at coarse cell centres rather than averaged into them, so the maps compare representative point samples, not true area means. Conservative (area-mean) regridding would be more rigorous but far more expensive at $\sim$1\,km. \textbf{Terrestrial vs global coverage.} Beyer and CHELSA are land-only (Beyer also excludes latitudes south of $\sim$60\dg\,S); their ocean cells are blank, so any ocean signal in a pair involving them is absent by construction. \textbf{Single example point.} The time-series results characterise one mid-latitude continental location and should not be generalised; the tool is designed to be re-run anywhere. \textbf{Source-file metadata quirk.} In the published Beyer2020 NetCDF the \tabbr{units} attributes of the two horizontal coordinates are transposed (longitude is labelled \tabbr{degrees\_north} and latitude \tabbr{degrees\_east}). This is a defect in the upstream file, not in the analysis: the tool identifies axes by name, not by their unit string, so results are unaffected.\footnote{Visible in the per-dataset inspection output (\tabbr{dataset\_info.txt}, Beyer2020 block).}
+
+\subsection{What the comparison shows}
+The exercise demonstrates both that these archives are hard to compare, since every dimension (variable, time, space, unit) requires explicit harmonisation before any number can be placed next to another, and that, once harmonised, the comparison is informative: it isolates a reproducible cool tendency in TraCE-21k, the strong structural disagreement between the two coupled GCMs at high latitudes, and the close agreement of the two observation-anchored products. These are exactly the systematic signals that flag where archives diverge and where modelling effort might be focused.
 
 \section{Future work}
-
-The current tool compares one point at a time and inspects the global difference maps by eye. The natural next step is to make the analysis quantitative. The difference maps could be paired with a per-cell correlation analysis through time, testing each cell's pair of series for a normal distribution and then applying a Pearson or a rank-based Spearman correlation as appropriate, which would separate cells where the datasets merely differ by an offset from cells where they disagree about the shape of the change. Correlating across space would give a time series of agreement, and correlating across time would give a map of agreement per cell, which read together with the difference maps would be a stronger basis for discussion. The differences could also be related to explanatory variables such as latitude, elevation, land versus ocean, and climate zone, to test directly the impression that the disagreement tracks cold and mountainous regions. Finally, the point extractor could be looped automatically over many sites rather than run one location at a time.
+Several extensions would sharpen the analysis. \emph{Automated multi-point sampling} would iterate the extraction over many locations (or whole grids) and aggregate, rather than inspecting one point at a time. \emph{Stratified analysis} would correlate the differences with latitude band, climate zone, land versus ocean, distance to former ice margins and elevation, moving from where the archives differ to why. \emph{Area-weighted regridding} would replace nearest-neighbour sampling in the heatmaps with conservative regridding, so the high-resolution archives are compared as true area means. \emph{Uncertainty} could be carried and displayed as the within-window temporal variability alongside the means, so an apparent offset can be judged against each archive's own variability. Finally, the comparison could be extended beyond temperature to precipitation and to the bioclimatic and vegetation fields available in Beyer2020.
 
 \section{Conclusion}
-
-The four datasets are genuinely hard to compare, because they differ in time origin, unit, grid, longitude convention, temperature variable, and resolution. The pipeline described here removes those obstacles in a reproducible way and reduces every dataset to a common ka BP axis, a common unit, and a common grid for comparison, then exposes both a point tool and a global difference map for each pair. Used on these four datasets, the tool shows agreement on the broad deglacial trend and disagreement of several degrees in absolute temperature, concentrated at high northern latitudes and over high terrain. A comparison of this kind cannot say which model is right, but it can point to where they diverge most, and those regions are the obvious candidates for closer scrutiny and, in turn, for improving the models.
+Four heterogeneous paleoclimate temperature archives spanning the last glacial cycle were downloaded, pre-processed and harmonised onto a common \kaBP{} time axis, a common unit (\degC) and a common spatial framework, and then compared both at a point and globally. The principal difficulty is the harmonisation rather than the comparison: each archive uses a different time origin and sign convention, a different grid and longitude convention, a different temperature variable, and temporal and spatial resolutions differing by three orders of magnitude. A single time-conversion function, name-based axis detection, automatic longitude handling and unit conversion make the four directly comparable. Once harmonised, the archives agree on the first-order deglacial signal, a cold LGM followed by warming into the Holocene, but disagree on absolute temperature by several degrees, and the disagreements are neither random nor uniform: TraCE-21k is systematically cool, the two coupled GCMs diverge most strongly and coherently at high northern latitudes, and the two observation-anchored downscaling products agree most closely. The comparison cannot adjudicate which archive is correct, but it pinpoints where and by how much they differ, which is precisely the diagnostic value of inter-model comparison and a useful pointer toward where the underlying models or reconstructions most warrant scrutiny.
 
 %-------------------------------------------------------------
 {
