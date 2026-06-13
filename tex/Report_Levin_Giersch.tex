@@ -133,7 +133,7 @@ Each archive uses a different access mechanism (Table~\ref{tab:acq}). PalMod2 is
 \small
 \begin{tabular}{lll}
 \toprule
-Dataset & Host & Mechanism \\
+Dataset          & Host                  & Mechanism \\
 \midrule
 TraCE-21k        & NCAR GDEX (d651050)   & Direct HTTP; filtered to TSA/TSOI. \\
 CHELSA-TraCE21k  & EnviDat / SwitchCH S3 & Parallel download (32 threads), atomic \tabbr{.part} rename. \\
@@ -167,12 +167,12 @@ The comparison restricts itself to near-surface air temperature (and, separately
 \small
 \begin{tabular}{lllll}
 \toprule
-Dataset & Air var. & Soil var. & Unit & Native averaging \\
+Dataset   & Air var.    & Soil var.    & Unit  & Native averaging \\
 \midrule
-Beyer2020 & temperature & --              & \degC & monthly $\rightarrow$ annual \\
-PalMod2   & tas         & tsl (layer)     & K     & monthly $\rightarrow$ annual \\
-TraCE-21k & TSA         & TSOI (layer)    & K     & decadal average \\
-CHELSA    & tasmean     & --              & K     & centennial clim. \\
+Beyer2020 & temperature & --           & \degC & monthly $\rightarrow$ annual \\
+PalMod2   & tas         & tsl (layer)  & K     & monthly $\rightarrow$ annual \\
+TraCE-21k & TSA         & TSOI (layer) & K     & decadal average \\
+CHELSA    & tasmean     & --           & K     & centennial clim. \\
 \bottomrule
 \end{tabular}
 \caption{Temperature variables harmonised.}
@@ -187,7 +187,7 @@ Every archive encodes time differently (different origin, sign convention and un
 \small
 \begin{tabular}{llll}
 \toprule
-Dataset & \tabbr{units} attribute & Raw range & Conversion \\
+Dataset   & \tabbr{units} attribute                       & Raw range             & Conversion \\
 \midrule
 Beyer2020 & \tabbr{years since present} (past negative)   & $[-120000,\,0]$       & $-\mathrm{vals}/1000$ \\
 PalMod2   & \tabbr{days since 1-1-1} (forward to present) & $[181,\,9\,130\,878]$ & $(\max-\mathrm{vals})/365250$ \\
@@ -207,12 +207,12 @@ The archives sit on four grids (Table~\ref{tab:space}) and use two longitude con
 \small
 \begin{tabular}{llllll}
 \toprule
-Dataset & Grid & Lat range & Lon range & Convention & Res. \\
+Dataset   & Grid                    & Lat range                   & Lon range                     & Convention  & Res. \\
 \midrule
-Beyer2020 & $720\times300$         & $-59.75\dg \ldots 89.75\dg$ & $-179.75\dg \ldots 179.75\dg$ & $-180$--180 & 0.5\dg \\
-PalMod2   & $96\times48$ (Gaussian) & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$ & 0--360 & $\sim$3.71/3.75\dg \\
-TraCE-21k & $96\times48$           & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$ & 0--360 & $\sim$3.71/3.75\dg \\
-CHELSA    & global $\sim$1\,km     & global & global & $-180$--180 & 0.0083\dg \\
+Beyer2020 & $720\times300$          & $-59.75\dg \ldots 89.75\dg$ & $-179.75\dg \ldots 179.75\dg$ & $-180$--180 & 0.5\dg \\
+PalMod2   & $96\times48$ (Gaussian) & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$       & 0--360      & $\sim$3.71/3.75\dg \\
+TraCE-21k & $96\times48$            & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$       & 0--360      & $\sim$3.71/3.75\dg \\
+CHELSA    & global $\sim$1\,km      & global                      & global                        & $-180$--180 & 0.0083\dg \\
 \bottomrule
 \end{tabular}
 \caption{Spatial grids (authoritative native resolutions).}
