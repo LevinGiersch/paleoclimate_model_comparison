@@ -11,6 +11,7 @@ sources/
 
 *.tar
 
+*.out
 *.aux
 *.bbl
 *.bcf
