@@ -50,7 +50,7 @@ conda activate palclim
 Then add your WDCC credentials (see below) and run the three notebooks in order:
 
 1. `data_downloader.ipynb`
-2. `data_processer.ipynb`
+2. `data_processor.ipynb`
 3. `paleoclimate_comparison.ipynb`  ← the main comparison tool
 
 In `paleoclimate_comparison.ipynb`, set the coordinate(s) you want in the **Configuration**
@@ -64,7 +64,7 @@ Run in order:
    download over plain HTTP; CHELSA downloads in parallel from EnviDat (32 threads, atomic
    `.part` rename); PalMod2 uses the `jblob` CLI with WDCC credentials. The downloader
    skips files that already exist, so it is safe to re-run.
-2. **`data_processer.ipynb`:** converts the CHELSA GeoTIFFs to NetCDF (one file per
+2. **`data_processor.ipynb`:** converts the CHELSA GeoTIFFs to NetCDF (one file per
    variable, then `tasmean = (tasmin + tasmax) / 2`), and runs CDO preprocessing on
    PalMod2 (`cdo yearmean`, then `cdo mergetime`). TraCE-21k and Beyer2020 are already
    analysis-ready NetCDF and are passed through unchanged.
@@ -80,7 +80,7 @@ Run in order:
 ### Requirements
 
 - ~1 TB free disk space
-- [CDO](https://code.mpimet.mpg.de/projects/cdo) (used by `data_processer.ipynb` for
+- [CDO](https://code.mpimet.mpg.de/projects/cdo) (used by `data_processor.ipynb` for
   PalMod2; installed via `environment.yml`)
 - [Conda](https://docs.conda.io/en/latest/miniconda.html)
 - A [WDCC account](https://www.wdc-climate.de/ui/login) for PalMod2 (registration may take
@@ -107,7 +107,7 @@ data/
 │   └── LateQuaternary_Environment.nc
 ├── PalMod2/
 │   ├── data/          # raw monthly files from WDCC
-│   └── output/        # merged annual-mean files (data_processer.ipynb)
+│   └── output/        # merged annual-mean files (data_processor.ipynb)
 │       ├── PMMXMCRTDGr111Amtasgn30201_1-250.nc   # air temp (tas)
 │       └── PMMXMCRTDGr111Lmtslgn30201_1-250.nc   # soil temp (tsl)
 ├── TraCE-21k/data/
@@ -115,7 +115,7 @@ data/
 │   └── trace.01-36.22000BP.clm2.TSOI.*.nc        # soil temp
 └── CHELSA-TraCE21k-centennial/
     ├── data/          # raw GeoTIFFs from EnviDat (tasmin, tasmax)
-    └── output/        # data_processer.ipynb
+    └── output/        # data_processor.ipynb
         ├── tasmin.nc  # intermediate
         ├── tasmax.nc  # intermediate
         └── tasmean.nc # used by the comparison notebook
