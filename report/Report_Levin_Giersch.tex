@@ -50,12 +50,10 @@
 \begin{document}
 
 \title{A harmonised point-extraction and comparison tool for heterogeneous paleoclimate datasets}
-\date{}
-
-\author{Levin Damian Antonin Giersch}
 
 \address{
 	\begin{tabular}{ll}
+	\textbf{Author:}	 & Levin Damian Antonin Giersch\\
 	\textbf{Student ID:} & 0515040\\
 	\textbf{E-Mail:}     & l.giersch@campus.tu-berlin.de\\
 	\textbf{Faculty:}    & Faculty VI - Planning Building Environment\\
@@ -69,7 +67,7 @@
 \keywords{Paleoclimate, Data harmonisation, Paleoclimate datasets, Temperature comparison, TraCE-21k, CHELSA-TraCE21k-centennial, PalMod2, Beyer2020}
 
 \abstract{
-Transient paleoclimate simulations and reconstructions are indispensable for understanding how the Earth system responds to forcing, yet they are distributed in mutually incompatible formats. Each archive uses a different time origin and unit, a different spatial grid and longitude convention, a different temperature variable, and a different temporal and spatial resolution. This project develops a small, reproducible Python toolchain that downloads four widely used temperature archives covering the last glacial cycle, namely TraCE-21k, CHELSA-TraCE21k-centennial, Beyer2020 and PalMod2. It harmonises their time axes onto a common kiloyears-before-present (\kaBP) scale, reconciles their spatial grids, converts all temperatures to degrees Celsius, and then extracts and compares temperature time series at an arbitrary point as well as globally through pairwise mean-difference heatmaps. Applied to an example location in northern Germany ($\approx 53.26\dg$\,N, $11.67\dg$\,E), the four archives agree on the first-order signal, a cold Last Glacial Maximum (LGM) followed by deglacial warming into the Holocene, but disagree on absolute temperature by several degrees, with the largest systematic divergences at high northern latitudes and in mountain regions. The report documents the datasets, the acquisition and pre-processing pipeline, the harmonisation methods and the results, and discusses why these archives are difficult to compare and what the comparison reveals.
+Transient paleoclimate simulations and reconstructions are indispensable for understanding how the Earth system responds to forcing, yet they are distributed in mutually incompatible formats. Each archive uses a different time origin and unit, a different spatial grid and longitude convention, a different temperature variable, and a different temporal and spatial resolution. This project develops a small, reproducible Python toolchain that downloads four widely used temperature archives covering the last glacial cycle, namely TraCE-21k, CHELSA-TraCE21k-centennial, Beyer2020 and PalMod2. It harmonises their time axes onto a common kiloyears-before-present (\kaBP) scale, reconciles their spatial grids, converts all temperatures to degrees Celsius, and then extracts and compares temperature time series at an arbitrary point as well as globally through pairwise mean-difference heatmaps. Applied to an example location in northern Germany ($\approx 53.26\dg$\,N, $11.67\dg$\,E), the four archives agree on the first-order signal, a cold Last Glacial Maximum (LGM) followed by deglacial warming into the Holocene, but disagree on absolute temperature by several degrees. The global comparison heatmaps show the largest systematic divergences at high northern latitudes and in mountain regions. The report documents the datasets, the acquisition and pre-processing pipeline, the harmonisation methods and the results, and discusses why these archives are difficult to compare and what the comparison reveals.
 }
 
 \maketitle
