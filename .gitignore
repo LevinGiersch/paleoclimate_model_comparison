@@ -24,7 +24,6 @@ sources/
 PalMod2_credentials.txt
 
 requirements.txt
-data_exploration.ipynb
 
 /data/Beyer2020/data/R_script.R
 /data/Beyer2020/data/Python_script.py
