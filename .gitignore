@@ -1,6 +1,7 @@
 .ipynb_checkpoints/
 .venv/
 sources/
+tex/
 
 *.tiff
 *.tif
