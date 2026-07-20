@@ -1,21 +1,16 @@
-% Version 2022-09-20
-% ISPRS full-paper template (isprs.cls) -- content: Levin Giersch project report
-% Requires isprs.cls and the bibliography file Bib.bib in the same folder.
-% Compile with: pdflatex -> bibtex -> pdflatex -> pdflatex
-
-\documentclass{isprs} % isprs class modified 23-04-2019 (Dennis Wittich)
+\documentclass{isprs}
 \usepackage{setspace}
-\usepackage{geometry} % added 27-02-2014 Markus Englich
+\usepackage{geometry}
 \usepackage{epstopdf}
-\usepackage[labelsep=period]{caption}  % added 14-04-2016 Markus Englich - Recommendation by Sebastian Brocks
-\usepackage{subcaption}                % multi-panel figures (supersedes the deprecated subfigure package)
+\usepackage[labelsep=period]{caption}
+\usepackage{subcaption}
 \usepackage[british]{babel}
 \usepackage[hang]{footmisc}
-\def\footnotemargin{1em} % added 08-01-2020 Dennis Wittich
-\usepackage{textcomp} % provides \textdegree
+\def\footnotemargin{1em}
+\usepackage{textcomp}
 \usepackage{amsmath}
-\usepackage{booktabs} % \toprule, \midrule, \bottomrule for the dataset table
-\usepackage{url} % defines \url, used by isprs.bst for web/DOI references
+\usepackage{booktabs}
+\usepackage{url}
 \usepackage{pdflscape}
 
 \usepackage{hyperref}
@@ -24,11 +19,11 @@
 
 % --------------------------------------------------------------------
 
-\geometry{a4paper, top=25mm, left=20mm, right=20mm, bottom=25mm, headsep=10mm, footskip=12mm} % added 27-02-2014 Markus Englich
+\geometry{a4paper, top=25mm, left=20mm, right=20mm, bottom=25mm, headsep=10mm, footskip=12mm}
 
-\captionsetup{justification=centering,font=normal} % thanks to Niclas Borlin 05-05-2016
-\captionsetup[figure]{font=small} % added 23-04-2019 Dennis Wittich
-\captionsetup[table]{font=small} % added 23-04-2019 Dennis Wittich
+\captionsetup{justification=centering,font=normal}
+\captionsetup[figure]{font=small}
+\captionsetup[table]{font=small}
 
 % --- float placement: many full-width figures/tables in two columns ---
 \setcounter{topnumber}{3}
@@ -145,7 +140,7 @@ PalMod2          			& WDCC / DKRZ           & \tabbr{jblob} client, login automa
 \end{table*}
 
 \section{Pre-processing}
-Two of the four archives cannot be used as delivered. The \tabbr{data\_processor} notebook performs the necessary conversions; TraCE-21k and Beyer2020 are already analysis-ready NetCDF and are passed through unchanged.
+Two of the four archives cannot be used as delivered. The \tabbr{data\_processor} notebook performs the necessary conversions on CHELSA-TraCE21k-centennial and PalMod2. TraCE-21k and Beyer2020 are already analysis-ready NetCDF and are passed through unchanged.
 
 \subsection{CHELSA-TraCE21k-centennial: GeoTIFF to centennial-mean NetCDF}
 The CHELSA-TraCE21k-centennial product arrives as one GeoTIFF per month, per time index, per variable, named \tabbr{CHELSA\_TraCE21k\_<var>\_<MM>\_<TTT>\_V.1.0.tif}, where \tabbr{MM} is the month and \tabbr{TTT} a centennial time index. The data\_processor notebook first groups files by year: a regex extracts month and index, and the index is mapped to a calendar year by $\mathrm{year} = 1990 - (20 - \mathrm{TTT})\times100$, anchored at $\mathrm{TTT}=20 \rightarrow 1990$\,CE with 100-year steps. Thus index 0 maps to about year $-10$\,CE and index $-200$ to about $-20010$\,CE ($\approx 22$ \kaBP, near the LGM). This mapping is consistent with the file's \tabbr{frequency=centennial} metadata, the $\sim$21,000-year nominal coverage and the file count (221 steps $\times$ 100 years $\approx 22$\,kyr); the exact index-to-year table is not published by CHELSA-TraCE21k-centennial, so the mapping is a well-constrained reconstruction, flagged as such in the notebook. For each year the 12 monthly rasters are stacked and averaged to one (lat, lon) field; CHELSA-TraCE21k-centennial stores temperature as Kelvin $\times$ 10, so a factor of 0.1 is applied and the result cast back to \tabbr{float32}. All years are concatenated along a new time axis (one timestamp at 1~July of each year), tagged with CF-style metadata, and written as one gzip-compressed NetCDF per variable at the full native $\sim$1\,km resolution. Finally $\mathrm{tasmean} = (\mathrm{tasmin}+\mathrm{tasmax})/2$ is derived. \cite{giersch2026_paleoclimate_model_comparison}
@@ -222,14 +217,19 @@ CHELSA-TraCE21k-centennial	& global $\sim$1\,km      & global                   
 PalMod2, TraCE-21k and CHELSA-TraCE21k-centennial store temperature in kelvin; Beyer2020 in degrees Celsius. All extracted series are converted to \degC{} (subtracting 273.15\,K where required) before plotting or differencing, so every figure is in a single, intuitive unit.
 
 \section{Point extraction}
+\label{sec:extraction}
 The function \tabbr{extract\_temperature\_at\_point} returns a 1-D temperature series (in \degC, on the \kaBP{} axis) for one file at a requested coordinate. It (i) opens the file without decoding times; (ii) selects the nearest grid cell with \tabbr{xarray.sel(method="nearest")} after translating the requested longitude into the file's convention, a plain nearest-neighbour lookup with no interpolation, recording the actual cell-centre coordinates; (iii) collapses extra dimensions (keeps the topmost soil layer if a depth dimension is present, averages a month dimension to an annual mean); and (iv) converts kelvin to \degC{} when needed. The same logic underlies the summary plots, so the text report, the time-series overlay and the grid-cell map cannot disagree about which cell was used.
 
+The extraction is not restricted to a single location. It is driven from a \tabbr{poi} dictionary that maps a label to a (latitude, longitude) pair, over whose entries the notebook iterates, so an arbitrary set of points is processed in one run and the extracted series are retained per location. The helper \tabbr{grid\_cell\_centers} returns every cell centre of a given file in the same dictionary format, optionally restricted to a bounding box by \tabbr{filter\_europe}, so the same machinery can also be pointed at a whole grid rather than at hand-picked coordinates. All point-based results shown in Section~\ref{sec:results} use a single entry, the example location in northern Germany.
+
 \section{Inter-model comparison method}
+\label{sec:comparison}
 Beyond the single-point series, the tool produces global pairwise mean-difference heatmaps. For a pair of archives $A$ and $B$: (1) a \emph{shared time window} is computed from the two time axes (their overlap), read cheaply from the time coordinate alone, so both means cover the same interval; (2) a \emph{common sampling grid} is used, namely every cell centre of the TraCE-21k grid ($96\times48 = 4608$ points), and for each archive the temperature at each point is read with a vectorised nearest-neighbour index, averaged over the shared window and converted to \degC; (3) the difference $A-B$ is drawn on a PlateCarree world map with the diverging PRGn colormap and a TwoSlopeNorm centred at zero (green $=A$ warmer, purple $=A$ colder), and cells where either archive has no data (for example ocean cells for the terrestrial Beyer2020 and CHELSA-TraCE21k-centennial archives) remain blank.
 
 Because the shared sampling grid is the \emph{coarse} TraCE-21k grid, the high-resolution archives (Beyer2020 at 0.5\dg, CHELSA-TraCE21k-centennial at $\sim$1\,km) are effectively sub-sampled, one representative pixel per $\sim$3.7\dg{} cell, rather than area-averaged into the coarse cell. This keeps the heatmaps fast and memory-bounded but means they compare \emph{point samples}, not area means (see Section~\ref{sec:caveats}). The point-extraction time-series plots, by contrast, use each archive at its native resolution; in particular CHELSA-TraCE21k-centennial is read at its full $\sim$1\,km grid, so the returned CHELSA-TraCE21k-centennial cell matches the requested point to within one $\sim$1\,km pixel ($\approx 0.0083\dg$).
 
 \section{Results}
+\label{sec:results}
 
 \subsection{Air-temperature time series at the example point}
 \begin{figure*}[t]
@@ -269,7 +269,7 @@ These summary panels (Figs.~\ref{fig:cov_air}--\ref{fig:cov_soil}) make the harm
 \end{figure*}
 
 \subsection{Global pairwise difference heatmaps}
-The difference maps are computed on the shared $96\times48 = 4608$-cell TraCE-21k grid described in Section~\ref{sec:caveats}.
+The difference maps are computed on the shared $96\times48 = 4608$-cell TraCE-21k grid described in Section~\ref{sec:comparison}.
 
 \paragraph{Soil temperature.} PalMod2 is markedly warmer than TraCE-21k across the high northern latitudes (northern Eurasia and North America, locally by $\sim$10--15\,\degC), with smaller patches where PalMod2 is cooler (Fig.~\ref{fig:diff_soil}). The dominant signal is a systematic high-latitude divergence between the two GCMs. TraCE-21k appears to be warmer in high mountain ranges such as the Himalayas and the Andes.
 
@@ -338,7 +338,18 @@ The differences arise from several superimposed causes that the comparison canno
 The exercise demonstrates both that these archives are hard to compare, since every dimension (variable, time, space, unit) requires explicit harmonisation before any number can be placed next to another, and that, once harmonised, the comparison is informative: it isolates a reproducible cool tendency in TraCE-21k, the strong structural disagreement between the two coupled GCMs at high latitudes, and the close agreement of the two observation-anchored products. These are exactly the systematic signals that flag where archives diverge and where modelling effort might be focused.
 
 \section{Future work}
-Several extensions would sharpen the analysis. \emph{Automated multi-point sampling} would iterate the extraction over many locations (or whole grids) and aggregate, rather than inspecting one point at a time. \emph{Stratified analysis} would correlate the differences with latitude band, climate zone, land versus ocean, distance to former ice margins and elevation, moving from where the archives differ to why. \emph{Area-weighted regridding} would replace nearest-neighbour sampling in the heatmaps with conservative regridding, so the high-resolution archives are compared as true area means. \emph{Uncertainty} could be carried and displayed as the within-window temporal variability alongside the means, so an apparent offset can be judged against each archive's own variability. Finally, the comparison could be extended beyond temperature to precipitation and to the bioclimatic and vegetation fields available in Beyer2020.
+Several extensions would sharpen the analysis.
+
+\emph{Aggregated multi-point analysis.} The extraction already accepts an arbitrary set of coordinates (Section~\ref{sec:extraction}), but the results are currently only inspected one location at a time: each point yields its own time-series overlay and coverage summary, and nothing reduces the set to a statistic. Aggregating instead of plotting, for example the mean and spread of the pairwise offsets across many points or across a whole grid, would replace the present single-point anecdote with a quantitative statement about how far the archives differ, and would close the gap between the point view and the global heatmaps, which are at present two separate products rather than two resolutions of one analysis.
+
+\emph{Stratified analysis.} Once many points are available, the differences could be correlated with latitude band, climate zone, land versus ocean, distance to the former ice margins and elevation, moving from where the archives differ to why they differ.
+
+\emph{Area-weighted regridding.} Conservative regridding would replace the nearest-neighbour sampling in the heatmaps, so that the high-resolution archives enter the comparison as true area means over each coarse cell rather than as one representative pixel per cell. This would remove the scale artefact identified in Section~\ref{sec:caveats}, at a considerably higher computational cost for the $\sim$1\,km archive.
+
+\emph{Uncertainty.} The within-window temporal variability of each archive could be carried alongside the means and displayed with them, so that an apparent offset can be judged against each archive's own variability rather than taken at face value.
+
+\emph{Further variables.} The comparison could be extended beyond
+temperature to precipitation, and to the bioclimatic and vegetation fields available in Beyer2020.
 
 \section{Conclusion}
 Four heterogeneous paleoclimate temperature archives spanning the last glacial cycle were downloaded, pre-processed and harmonised onto a common \kaBP{} time axis, a common unit (\degC) and a common spatial framework, and then compared both at a point and globally. The principal difficulty is the harmonisation rather than the comparison: each archive uses a different time origin and sign convention, a different grid and longitude convention, a different temperature variable, and temporal and spatial resolutions differing by three orders of magnitude. A single time-conversion function, name-based axis detection, automatic longitude handling and unit conversion make the four directly comparable. Once harmonised, the archives agree on the first-order deglacial signal, a cold LGM followed by warming into the Holocene, but disagree on absolute temperature by several degrees, and the disagreements are neither random nor uniform: TraCE-21k is systematically cool, the two coupled GCMs diverge most strongly and coherently at high northern latitudes, and the two observation-anchored downscaling products agree most closely. The comparison cannot adjudicate which archive is correct, but it pinpoints where and by how much they differ, which is precisely the diagnostic value of inter-model comparison and a useful pointer toward where the underlying models or reconstructions most warrant scrutiny.
@@ -347,7 +358,7 @@ Four heterogeneous paleoclimate temperature archives spanning the last glacial c
 {
 	\begin{spacing}{1.17}
 		\normalsize
-		\bibliography{Bib} % your bibliography file Bib.bib; style is given in isprs.cls
+		\bibliography{Bib}
 	\end{spacing}
 }
 
