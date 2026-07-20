@@ -24,10 +24,10 @@ much* the archives diverge.
 
 | Dataset | Variables | Coverage | Time step | Native resolution | Format |
 |---|---|---|---|---|---|
-| **Beyer2020/21** (figshare v4) | air temp | 120–0 ka BP | 1–2 kyr | 0.5° | NetCDF |
-| **PalMod2** (MPI-ESM1.2-CR) | air temp, soil temp | 25–0 ka BP | annual | ~3.7° (T31) | NetCDF |
-| **TraCE-21k** (CCSM3) | air temp, soil temp | 22–0 ka BP | decadal | ~3.7° (T31) | NetCDF |
-| **CHELSA-TraCE21k-centennial** | air temp | 22–0 ka BP | 100 yr | 30 arcsec (~0.0083°, ~1 km) | GeoTIFF → NetCDF |
+| **Beyer2020/21** (figshare v4) | air temp (`temperature`) | 120–0 ka BP | 1–2 kyr | 0.5° | NetCDF |
+| **PalMod2** (MPI-ESM1.2-CR) | air temp (`tas`), soil temp (`tsl`) | 25–0 ka BP | annual | ~3.7° (T31) | NetCDF |
+| **TraCE-21k** (CCSM3) | air temp (`TSA`), soil temp (`TSOI`) | 22–0 ka BP | decadal | ~3.7° (T31) | NetCDF |
+| **CHELSA-TraCE21k-centennial** | air temp (`tasmax`, `tasmin` → `tasmean`) | 22–0 ka BP | 100 yr | 30 arcsec (~0.0083°, ~1 km) | GeoTIFF → NetCDF |
 
 Total download is on the order of **1 TB**, dominated by the ~1 km CHELSA GeoTIFFs.
 
@@ -36,6 +36,10 @@ high-resolution, observation-anchored downscaling products (Beyer2020/21, CHELSA
 variables are physically close but not identical: TraCE `TSA` and PalMod2 `tas` are model
 2 m air temperatures, Beyer `temperature` is a downscaled bias-corrected monthly mean, and
 CHELSA `tasmean` is the mean of downscaled daily extremes `(tasmin + tasmax) / 2`.
+
+PalMod2 and TraCE-21k sit on the **same T31 grid**, so for any requested point they return
+the identical grid cell. Differences between those two are therefore model differences,
+not grid artefacts.
 
 ## Quick start
 
@@ -51,7 +55,7 @@ Then add your WDCC credentials (see below) and run the three notebooks in order:
 
 1. `data_downloader.ipynb`
 2. `data_processor.ipynb`
-3. `paleoclimate_comparison.ipynb`  ← the main comparison tool
+3. `paleoclimate_comparison.ipynb`  (the main comparison tool)
 
 In `paleoclimate_comparison.ipynb`, set the coordinate(s) you want in the **Configuration**
 / **Points of interest** cells, then run top to bottom.
@@ -79,7 +83,7 @@ Run in order:
 
 ### Requirements
 
-- ~1 TB free disk space
+- ~1 TB free disk space (plus ~100 GB per CHELSA intermediate NetCDF, see below)
 - [CDO](https://code.mpimet.mpg.de/projects/cdo) (used by `data_processor.ipynb` for
   PalMod2; installed via `environment.yml`)
 - [Conda](https://docs.conda.io/en/latest/miniconda.html)
@@ -106,27 +110,26 @@ data/
 ├── Beyer2020/data/
 │   └── LateQuaternary_Environment.nc
 ├── PalMod2/
-│   ├── data/          # raw monthly files from WDCC
+│   ├── data/          # raw monthly files from WDCC (250 tar-bundled .nc per variable)
 │   └── output/        # merged annual-mean files (data_processor.ipynb)
-│       ├── PMMXMCRTDGr111Amtasgn30201_1-250.nc   # air temp (tas)
-│       └── PMMXMCRTDGr111Lmtslgn30201_1-250.nc   # soil temp (tsl)
+│       ├── PMMXMCRTDGr111Amtasgn30201_1-250.nc   # air temp (tas), 25 000 annual steps
+│       └── PMMXMCRTDGr111Lmtslgn30201_1-250.nc   # soil temp (tsl), 25 000 annual steps
 ├── TraCE-21k/data/
 │   ├── trace.01-36.22000BP.clm2.TSA.*.nc         # air temp
 │   └── trace.01-36.22000BP.clm2.TSOI.*.nc        # soil temp
 └── CHELSA-TraCE21k-centennial/
     ├── data/          # raw GeoTIFFs from EnviDat (tasmin, tasmax)
     └── output/        # data_processor.ipynb
-        ├── tasmin.nc  # intermediate
-        ├── tasmax.nc  # intermediate
+        ├── tasmin.nc  # intermediate, ~100 GB
+        ├── tasmax.nc  # intermediate, ~100 GB
         └── tasmean.nc # used by the comparison notebook
 ```
 
 ## Key implementation notes
 
-**Time axis:** every archive uses a different convention. `time_to_ka_bp()` in `paleoclimate_comparison.ipynb` normalises all four to *ka BP (past = positive,
-present = 0)*. For the two `days since` archives only the elapsed time before the most
-recent sample matters, so the conversion anchors on `vals.max()`; the ~0.5 ka rounding
-this can introduce is invisible on a 0–120 ka axis.
+**Time axis:** every archive uses a different convention. `time_to_ka_bp()` in
+`paleoclimate_comparison.ipynb` normalises all four to *ka BP (past = positive,
+present = 0)*.
 
 | Dataset | Raw units | Conversion |
 |---|---|---|
@@ -135,7 +138,27 @@ this can introduce is invisible on a 0–120 ka axis.
 | TraCE-21k | `ka BP`, stored as negative values | `-vals` |
 | CHELSA | `days since −20010-07-01`, increasing toward present | `(max − vals) / 365250` |
 
-(`365250 = 1000 × 365.25` days = 1 kyr in a proleptic-Gregorian calendar.)
+(`365250 = 1000 × 365.25` days = 1 kyr in a proleptic-Gregorian calendar. Using 365.25
+instead of the exact mean year of 365.2425 accumulates to about **half a year over
+22 kyr**, which is invisible on a 0–120 ka axis.)
+
+For the two `days since` archives the conversion anchors on `vals.max()`, i.e. on each
+file's own most recent sample. This means the four zero points are not literally the same
+instant: CHELSA's zero is 1990 CE, TraCE's series runs 30 years past its own zero
+(−0.03 ka BP), PalMod2's zero is model year 25000, Beyer's is a nominal "present". The
+offsets are decades to centuries and are negligible at these timescales, but they are not
+exactly zero.
+
+**CHELSA time index:** the index-to-year mapping `year = 1990 − (20 − TTT) × 100` is a
+reconstruction, not published by CHELSA. It is consistent with the files' `frequency=
+centennial` metadata, the ~21 kyr nominal coverage, and the file count (221 steps ×
+100 yr ≈ 22 kyr).
+
+**PalMod2 CDO step:** each raw file holds 100 years of monthly data (1200 time steps).
+`cdo yearmean` collapses each file to 100 annual means, then `cdo mergetime` concatenates
+the 250 files into a single 25 000-step series per variable. `yearmean` runs with the
+extraction directory as its working directory and relative input names, and `mergetime`
+writes into a temporary directory, so CDO never sees the space-containing project path.
 
 **Spatial selection:** nearest-neighbour grid-cell lookup via
 `xarray.sel(method="nearest")`, recording the actual cell-centre coordinates. Longitude
@@ -144,6 +167,11 @@ detected by name, not by their `units` string, which matters because the publish
 Beyer2020 NetCDF has its longitude/latitude `units` attributes transposed (longitude
 labelled `degrees_north`, latitude `degrees_east`).
 
+**Difference heatmaps:** both archives of a pair are sampled at the 96 × 48 = 4608 cell
+centres of the T31 grid shared by PalMod2 and TraCE-21k, averaged over the pair's shared
+time window, differenced, and drawn with `PRGn` and a `TwoSlopeNorm` centred on zero
+(green = first archive warmer, purple = colder).
+
 **Unit conversion:** PalMod2, TraCE-21k and CHELSA store temperature in kelvin; Beyer2020
 uses °C. All series are converted to °C before plotting or differencing.
 
@@ -151,12 +179,20 @@ uses °C. All series are converted to °C before plotting or differencing.
 
 - **Nearest-neighbour, no area weighting.** Both the point extraction and the heatmaps use
   nearest-neighbour selection. In the heatmaps the high-resolution archives are sampled at
-  the coarse TraCE grid-cell centres (one representative pixel per ~3.7° cell), so the maps
+  the T31 grid-cell centres (one representative pixel per ~3.7° cell), so the maps
   compare point samples, not true area means.
+- **Out-of-domain queries are clamped, not masked.** The heatmap index helper snaps a
+  query outside an archive's coordinate range to that archive's edge row rather than
+  returning NaN. In practice this affects the outermost T31 rows in pairs involving CHELSA
+  (no data north of ~84° N) or Beyer2020 (none south of ~60° S): where the edge row is not
+  itself NaN, a value sampled at the domain boundary is plotted at a latitude it does not
+  belong to. Treat the polar-most rows of those heatmaps as unreliable.
 - **Variable definitions differ.** See the note above; a model 2 m diagnostic, a downscaled
   monthly mean and the mean of downscaled daily extremes are close but not interchangeable.
 - **Coarse-cell land/sea mixing.** A ~3.7° GCM cell can straddle land and ocean, which
-  biases it relative to the high-resolution land-only archives at coastal points.
+  biases both coarse archives relative to the high-resolution land-only archives at coastal
+  points. It cannot explain PalMod2 vs TraCE-21k differences, since those two return the
+  same cell.
 - **Land-only products.** Beyer and CHELSA are terrestrial only (Beyer also excludes
   latitudes south of ~60° S; CHELSA tops out near 84° N), so their ocean cells are blank.
 - **Single example point.** The bundled results are for one mid-latitude continental
