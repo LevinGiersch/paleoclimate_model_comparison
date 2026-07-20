@@ -209,7 +209,7 @@ TraCE-21k					& $96\times48$            & $-87.16\dg \ldots 87.16\dg$ & $0\dg \l
 CHELSA-TraCE21k-centennial	& global $\sim$1\,km      & global                      & global                        & $-180$--180 & 0.0083\dg \\
 \bottomrule
 \end{tabular}
-\caption{Spatial grids (authoritative native resolutions).}
+\caption{Spatial grids (native resolutions).}
 \label{tab:space}
 \end{table*}
 
@@ -224,9 +224,9 @@ The extraction is not restricted to a single location. It is driven from a \tabb
 
 \section{Inter-model comparison method}
 \label{sec:comparison}
-Beyond the single-point series, the tool produces global pairwise mean-difference heatmaps. For a pair of archives $A$ and $B$: (1) a \emph{shared time window} is computed from the two time axes (their overlap), read cheaply from the time coordinate alone, so both means cover the same interval; (2) a \emph{common sampling grid} is used, namely every cell centre of the TraCE-21k grid ($96\times48 = 4608$ points), and for each archive the temperature at each point is read with a vectorised nearest-neighbour index, averaged over the shared window and converted to \degC; (3) the difference $A-B$ is drawn on a PlateCarree world map with the diverging PRGn colormap and a TwoSlopeNorm centred at zero (green $=A$ warmer, purple $=A$ colder), and cells where either archive has no data (for example ocean cells for the terrestrial Beyer2020 and CHELSA-TraCE21k-centennial archives) remain blank.
+Beyond the single-point series, the tool produces global pairwise mean-difference heatmaps. For a pair of archives $A$ and $B$: (1) a \emph{shared time window} is computed from the two time axes (their overlap), read cheaply from the time coordinate alone, so both means cover the same interval; (2) a \emph{common sampling grid} is used, namely every cell centre of the T31 grid shared by PalMod2 and TraCE-21k ($96\times48 = 4608$ points), and for each archive the temperature at each point is read with a vectorised nearest-neighbour index, averaged over the shared window and converted to \degC; (3) the difference $A-B$ is drawn on a PlateCarree world map with the diverging PRGn colormap and a TwoSlopeNorm centred at zero (green $=A$ warmer, purple $=A$ colder), and cells where either archive has no data (for example ocean cells for the terrestrial Beyer2020 and CHELSA-TraCE21k-centennial archives) remain blank.
 
-Because the shared sampling grid is the \emph{coarse} TraCE-21k grid, the high-resolution archives (Beyer2020 at 0.5\dg, CHELSA-TraCE21k-centennial at $\sim$1\,km) are effectively sub-sampled, one representative pixel per $\sim$3.7\dg{} cell, rather than area-averaged into the coarse cell. This keeps the heatmaps fast and memory-bounded but means they compare \emph{point samples}, not area means (see Section~\ref{sec:caveats}). The point-extraction time-series plots, by contrast, use each archive at its native resolution; in particular CHELSA-TraCE21k-centennial is read at its full $\sim$1\,km grid, so the returned CHELSA-TraCE21k-centennial cell matches the requested point to within one $\sim$1\,km pixel ($\approx 0.0083\dg$).
+Because the shared sampling grid is the \emph{coarse} T31 grid, the high-resolution archives (Beyer2020 at 0.5\dg, CHELSA-TraCE21k-centennial at $\sim$1\,km) are effectively sub-sampled, one representative pixel per $\sim$3.7\dg{} cell, rather than area-averaged into the coarse cell. This keeps the heatmaps fast and memory-bounded but means they compare \emph{point samples}, not area means (see Section~\ref{sec:caveats}). The point-extraction time-series plots, by contrast, use each archive at its native resolution; in particular CHELSA-TraCE21k-centennial is read at its full $\sim$1\,km grid, so the returned CHELSA-TraCE21k-centennial cell matches the requested point to within one $\sim$1\,km pixel ($\approx 0.0083\dg$).
 
 \section{Results}
 \label{sec:results}
@@ -269,7 +269,7 @@ These summary panels (Figs.~\ref{fig:cov_air}--\ref{fig:cov_soil}) make the harm
 \end{figure*}
 
 \subsection{Global pairwise difference heatmaps}
-The difference maps are computed on the shared $96\times48 = 4608$-cell TraCE-21k grid described in Section~\ref{sec:comparison}.
+The difference maps are computed on the shared $96\times48 = 4608$-cell T31 grid described in Section~\ref{sec:comparison}.
 
 \paragraph{Soil temperature.} PalMod2 is markedly warmer than TraCE-21k across the high northern latitudes (northern Eurasia and North America, locally by $\sim$10--15\,\degC), with smaller patches where PalMod2 is cooler (Fig.~\ref{fig:diff_soil}). The dominant signal is a systematic high-latitude divergence between the two GCMs. TraCE-21k appears to be warmer in high mountain ranges such as the Himalayas and the Andes.
 
@@ -285,42 +285,42 @@ The difference maps are computed on the shared $96\times48 = 4608$-cell TraCE-21
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.72\textwidth]{diff_air_beyer2020_palmod2.png}
-\caption{Mean air-temperature difference, Beyer2020 $-$ PalMod2 (0--25\,ka), sampled at the TraCE-21k grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
+\caption{Mean air-temperature difference, Beyer2020 $-$ PalMod2 (0--25\,ka), sampled at the T31 grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
 \label{fig:diff_air_beyer_palmod2}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.72\textwidth]{diff_air_beyer2020_trace21k.png}
-\caption{Mean air-temperature difference, Beyer2020 $-$ TraCE-21k (0--22\,ka), sampled at the TraCE-21k grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
+\caption{Mean air-temperature difference, Beyer2020 $-$ TraCE-21k (0--22\,ka), sampled at the T31 grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
 \label{fig:diff_air_beyer_trace21k}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.72\textwidth]{diff_air_beyer2020_chelsatrace21k.png}
-\caption{Mean air-temperature difference, Beyer2020 $-$ CHELSA-TraCE21k-centennial (0--22\,ka), sampled at the TraCE-21k grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
+\caption{Mean air-temperature difference, Beyer2020 $-$ CHELSA-TraCE21k-centennial (0--22\,ka), sampled at the T31 grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
 \label{fig:diff_air_beyer_chelsa}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.72\textwidth]{diff_air_palmod2_trace21k.png}
-\caption{Mean air-temperature difference, PalMod2 $-$ TraCE-21k (0--22\,ka), sampled at the TraCE-21k grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
+\caption{Mean air-temperature difference, PalMod2 $-$ TraCE-21k (0--22\,ka), sampled at the T31 grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
 \label{fig:diff_air_palmod2_trace21k}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.72\textwidth]{diff_air_palmod2_chelsatrace21k.png}
-\caption{Mean air-temperature difference, PalMod2 $-$ CHELSA-TraCE21k-centennial (0--22\,ka), sampled at the TraCE-21k grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
+\caption{Mean air-temperature difference, PalMod2 $-$ CHELSA-TraCE21k-centennial (0--22\,ka), sampled at the T31 grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
 \label{fig:diff_air_palmod2_chelsa}
 \end{figure*}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=0.72\textwidth]{diff_air_trace21k_chelsatrace21k.png}
-\caption{Mean air-temperature difference, TraCE-21k $-$ CHELSA-TraCE21k-centennial (0--22\,ka), sampled at the TraCE-21k grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
+\caption{Mean air-temperature difference, TraCE-21k $-$ CHELSA-TraCE21k-centennial (0--22\,ka), sampled at the T31 grid and averaged over the pair's shared time window (green $=$ first archive warmer, purple $=$ colder).}
 \label{fig:diff_air_trace21k_chelsa}
 \end{figure*}
 
