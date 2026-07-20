@@ -64,7 +64,7 @@
 }
 
 
-\keywords{Paleoclimate, Data harmonisation, Paleoclimate datasets, Temperature comparison, TraCE-21k, CHELSA-TraCE21k-centennial, PalMod2, Beyer2020}
+\keywords{Paleoclimate, Data harmonisation, Paleoclimate datasets, Temperature comparison, Air temperature, Ground temperature, TraCE-21k, CHELSA-TraCE21k-centennial, PalMod2, Beyer2020}
 
 \abstract{
 Transient paleoclimate simulations and reconstructions are indispensable for understanding how the Earth system responds to forcing, yet they are distributed in mutually incompatible formats. Each archive uses a different time origin and unit, a different spatial grid and longitude convention, a different temperature variable, and a different temporal and spatial resolution. This project develops a small, reproducible Python toolchain that downloads four widely used temperature archives covering the last glacial cycle, namely TraCE-21k, CHELSA-TraCE21k-centennial, Beyer2020 and PalMod2. It harmonises their time axes onto a common kiloyears-before-present (\kaBP) scale, reconciles their spatial grids, converts all temperatures to degrees Celsius, and then extracts and compares temperature time series at an arbitrary point as well as globally through pairwise mean-difference heatmaps. Applied to an example location in northern Germany ($\approx 53.26\dg$\,N, $11.67\dg$\,E), the four archives agree on the first-order signal, a cold Last Glacial Maximum (LGM) followed by deglacial warming into the Holocene, but disagree on absolute temperature by several degrees. The global comparison heatmaps show the largest systematic divergences at high northern latitudes and in mountain regions. The report documents the datasets, the acquisition and pre-processing pipeline, the harmonisation methods and the results, and discusses why these archives are difficult to compare and what the comparison reveals.
@@ -100,12 +100,12 @@ Four archives were selected to span the trade-off between temporal resolution, s
 \small
 \begin{tabular}{lllllll}
 \toprule
-Dataset           & Type                        & Variables   & Coverage     & Time step  & Native res.           & Unit \\
+Dataset           			& Type                        & Variables   & Coverage     & Time step  & Native res.           	& Unit \\
 \midrule
-TraCE-21k         & Coupled GCM (CCSM3)         & TSA, TSOI   & 22--0 \kaBP  & decadal    & T31 ($\sim$3.75\dg)   & K \\
-PalMod2           & Coupled GCM (MPI-ESM1.2-CR) & tas, tsl    & 25--0 \kaBP  & annual     & T31 ($\sim$3.71\dg)   & K \\
-Beyer2020/21 (v4) & Downscaled reconstruction   & temperature & 120--0 \kaBP & 2/1 kyr    & 0.5\dg{}              & \degC \\
-CHELSA-TraCE21k-centennial   & Downscaled product          & tasmean     & 22--0 \kaBP  & centennial & $\sim$1\,km (30\,arcsec) & K \\
+TraCE-21k         			& Coupled GCM (CCSM3)         & TSA, TSOI   & 22--0 \kaBP  & decadal    & T31 ($\sim$3.75\dg)   	& K \\
+PalMod2           			& Coupled GCM (MPI-ESM1.2-CR) & tas, tsl    & 25--0 \kaBP  & annual     & T31 ($\sim$3.71\dg)   	& K \\
+Beyer2020/21 (v4)			& Downscaled reconstruction   & temperature & 120--0 \kaBP & 2/1 kyr    & 0.5\dg{}              	& \degC \\
+CHELSA-TraCE21k-centennial  & Downscaled product          & tasmean     & 22--0 \kaBP  & centennial & $\sim$1\,km (30\,arcsec) 	& K \\
 \bottomrule
 \end{tabular}
 \caption{Overview of the four temperature archives.}
@@ -132,12 +132,12 @@ Each archive uses a different access mechanism (Table~\ref{tab:acq}). PalMod2 is
 \small
 \begin{tabular}{lll}
 \toprule
-Dataset          & Host                  & Mechanism \\
+Dataset          			& Host                  & Mechanism \\
 \midrule
-TraCE-21k        & NCAR GDEX (d651050)   & Direct HTTP; filtered to TSA/TSOI. \\
+TraCE-21k        			& NCAR GDEX (d651050)   & Direct HTTP; filtered to TSA/TSOI. \\
 CHELSA-TraCE21k-centennial  & EnviDat / SwitchCH S3 & Parallel download (32 threads), atomic \tabbr{.part} rename. \\
-Beyer2020   & figshare API          & Query API for version 4 of article 12293345. \\
-PalMod2          & WDCC / DKRZ           & \tabbr{jblob} client, login automated via \tabbr{pexpect}. \\
+Beyer2020   				& figshare API          & Query API for version 4 of article 12293345. \\
+PalMod2          			& WDCC / DKRZ           & \tabbr{jblob} client, login automated via \tabbr{pexpect}. \\
 \bottomrule
 \end{tabular}
 \caption{Acquisition mechanism per dataset.}
@@ -166,12 +166,12 @@ The comparison restricts itself to near-surface air temperature (and, separately
 \small
 \begin{tabular}{lllll}
 \toprule
-Dataset   & Air var.    & Soil var.    & Unit  & Native averaging \\
+Dataset   					& Air var.    & Soil var.    & Unit  & Native averaging \\
 \midrule
-Beyer2020 & temperature & --           & \degC & monthly $\rightarrow$ annual \\
-PalMod2   & tas         & tsl (layer)  & K     & monthly $\rightarrow$ annual \\
-TraCE-21k & TSA         & TSOI (layer) & K     & decadal average \\
-CHELSA-TraCE21k-centennial    & tasmean     & --           & K     & centennial clim. \\
+Beyer2020					& temperature & --           & \degC & monthly $\rightarrow$ annual \\
+PalMod2						& tas         & tsl (layer)  & K     & monthly $\rightarrow$ annual \\
+TraCE-21k 					& TSA         & TSOI (layer) & K     & decadal average \\
+CHELSA-TraCE21k-centennial  & tasmean     & --           & K     & centennial clim. \\
 \bottomrule
 \end{tabular}
 \caption{Temperature variables harmonised.}
@@ -186,12 +186,12 @@ Every archive encodes time differently (different origin, sign convention and un
 \small
 \begin{tabular}{llll}
 \toprule
-Dataset   & \tabbr{units} attribute                       & Raw range             & Conversion \\
+Dataset						& \tabbr{units} attribute                       & Raw range             & Conversion \\
 \midrule
-Beyer2020 & \tabbr{years since present} (past negative)   & $[-120000,\,0]$       & $-\mathrm{vals}/1000$ \\
-PalMod2   & \tabbr{days since 1-1-1} (forward to present) & $[181,\,9\,130\,878]$ & $(\max-\mathrm{vals})/365250$ \\
-TraCE-21k & \tabbr{ka BP} (stored negative)               & $[-22,\,0.03]$        & $-\mathrm{vals}$ \\
-CHELSA-TraCE21k-centennial    & \tabbr{days since -20010-07-01} (forward)     & $[0,\,8\,035\,335]$   & $(\max-\mathrm{vals})/365250$ \\
+Beyer2020					& \tabbr{years since present} (past negative)   & $[-120000,\,0]$       & $-\mathrm{vals}/1000$ \\
+PalMod2						& \tabbr{days since 1-1-1} (forward to present) & $[181,\,9\,130\,878]$ & $(\max-\mathrm{vals})/365250$ \\
+TraCE-21k					& \tabbr{ka BP} (stored negative)               & $[-22,\,0.03]$        & $-\mathrm{vals}$ \\
+CHELSA-TraCE21k-centennial	& \tabbr{days since -20010-07-01} (forward)     & $[0,\,8\,035\,335]$   & $(\max-\mathrm{vals})/365250$ \\
 \bottomrule
 \end{tabular}
 \caption{Time-axis conventions and conversion to \kaBP.}
@@ -206,12 +206,12 @@ The archives sit on four grids (Table~\ref{tab:space}) and use two longitude con
 \small
 \begin{tabular}{llllll}
 \toprule
-Dataset   & Grid                    & Lat range                   & Lon range                     & Convention  & Res. \\
+Dataset   					& Grid                    & Lat range                   & Lon range                     & Convention  & Res. \\
 \midrule
-Beyer2020 & $720\times300$          & $-59.75\dg \ldots 89.75\dg$ & $-179.75\dg \ldots 179.75\dg$ & $-180$--180 & 0.5\dg \\
-PalMod2   & $96\times48$ (Gaussian) & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$       & 0--360      & $\sim$3.71/3.75\dg \\
-TraCE-21k & $96\times48$            & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$       & 0--360      & $\sim$3.71/3.75\dg \\
-CHELSA-TraCE21k-centennial    & global $\sim$1\,km      & global                      & global                        & $-180$--180 & 0.0083\dg \\
+Beyer2020					& $720\times300$          & $-59.75\dg \ldots 89.75\dg$ & $-179.75\dg \ldots 179.75\dg$ & $-180$--180 & 0.5\dg \\
+PalMod2						& $96\times48$ (Gaussian) & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$       & 0--360      & $\sim$3.71/3.75\dg \\
+TraCE-21k					& $96\times48$            & $-87.16\dg \ldots 87.16\dg$ & $0\dg \ldots 356.25\dg$       & 0--360      & $\sim$3.71/3.75\dg \\
+CHELSA-TraCE21k-centennial	& global $\sim$1\,km      & global                      & global                        & $-180$--180 & 0.0083\dg \\
 \bottomrule
 \end{tabular}
 \caption{Spatial grids (authoritative native resolutions).}
