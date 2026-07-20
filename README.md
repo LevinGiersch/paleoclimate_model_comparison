@@ -23,7 +23,7 @@ much* the archives diverge.
 ## Datasets
 
 | Dataset | Variables | Coverage | Time step | Native resolution | Format |
-|---|---|---|---|---|---|
+| --- | --- | --- | --- | --- | --- |
 | **Beyer2020/21** (figshare v4) | air temp (`temperature`) | 120–0 ka BP | 1–2 kyr | 0.5° | NetCDF |
 | **PalMod2** (MPI-ESM1.2-CR) | air temp (`tas`), soil temp (`tsl`) | 25–0 ka BP | annual | ~3.7° (T31) | NetCDF |
 | **TraCE-21k** (CCSM3) | air temp (`TSA`), soil temp (`TSOI`) | 22–0 ka BP | decadal | ~3.7° (T31) | NetCDF |
@@ -55,10 +55,10 @@ Then add your WDCC credentials (see below) and run the three notebooks in order:
 
 1. `data_downloader.ipynb`
 2. `data_processor.ipynb`
-3. `paleoclimate_comparison.ipynb`  (the main comparison tool)
+3. `paleoclimate_comparison.ipynb` (the main comparison tool)
 
-In `paleoclimate_comparison.ipynb`, set the coordinate(s) you want in the **Configuration**
-/ **Points of interest** cells, then run top to bottom.
+In `paleoclimate_comparison.ipynb`, set the coordinate(s) you want in the
+**Configuration** / **Points of interest** cells, then run top to bottom.
 
 ## Notebooks
 
@@ -75,9 +75,6 @@ Run in order:
 3. **`paleoclimate_comparison.ipynb`:** the main comparison tool. Produces the inspection
    reports, the point time-series overlay, the coverage/grid-cell summary, and the global
    difference heatmaps.
-
-> `data_exploration.ipynb` is an earlier scratch version of notebook 3 and is not part of
-> the pipeline. Use `paleoclimate_comparison.ipynb`.
 
 ## Setup
 
@@ -132,7 +129,7 @@ data/
 present = 0)*.
 
 | Dataset | Raw units | Conversion |
-|---|---|---|
+| --- | --- | --- |
 | Beyer2020 | `years since present`, negative = past | `-vals / 1000` |
 | PalMod2 | `days since 1-1-1`, increasing toward present | `(max − vals) / 365250` |
 | TraCE-21k | `ka BP`, stored as negative values | `-vals` |
@@ -150,9 +147,9 @@ offsets are decades to centuries and are negligible at these timescales, but the
 exactly zero.
 
 **CHELSA time index:** the index-to-year mapping `year = 1990 − (20 − TTT) × 100` is a
-reconstruction, not published by CHELSA. It is consistent with the files' `frequency=
-centennial` metadata, the ~21 kyr nominal coverage, and the file count (221 steps ×
-100 yr ≈ 22 kyr).
+reconstruction, not published by CHELSA. It is consistent with the files'
+`frequency=centennial` metadata, the ~21 kyr nominal coverage, and the file count
+(221 steps × 100 yr ≈ 22 kyr).
 
 **PalMod2 CDO step:** each raw file holds 100 years of monthly data (1200 time steps).
 `cdo yearmean` collapses each file to 100 annual means, then `cdo mergetime` concatenates
@@ -186,7 +183,9 @@ uses °C. All series are converted to °C before plotting or differencing.
   returning NaN. In practice this affects the outermost T31 rows in pairs involving CHELSA
   (no data north of ~84° N) or Beyer2020 (none south of ~60° S): where the edge row is not
   itself NaN, a value sampled at the domain boundary is plotted at a latitude it does not
-  belong to. Treat the polar-most rows of those heatmaps as unreliable.
+  belong to. Treat the polar-most rows of those heatmaps as unreliable. The high-latitude
+  divergence discussed in the results sits well inside the domain (roughly 60–75° N) and
+  is not affected.
 - **Variable definitions differ.** See the note above; a model 2 m diagnostic, a downscaled
   monthly mean and the mean of downscaled daily extremes are close but not interchangeable.
 - **Coarse-cell land/sea mixing.** A ~3.7° GCM cell can straddle land and ocean, which
@@ -200,14 +199,14 @@ uses °C. All series are converted to °C before plotting or differencing.
 
 ## Data sources
 
-| Dataset | Reference | DOI
-|---|---|---|
-| TraCE-21k | Otto-Bliesner & Rosenbloom (2021), NCAR GDEX d651050 | [10.5065/CXB5-TV56](https://doi.org/10.5065/CXB5-TV56)
-| CHELSA-TraCE21k (paper) | Karger et al. (2023), *Clim. Past* 19, 439–456 | [10.5194/cp-19-439-2023](https://doi.org/10.5194/cp-19-439-2023)
-| CHELSA-TraCE21k (data) | Karger et al. (2020), EnviDat | [10.16904/envidat.211](https://doi.org/10.16904/envidat.211)
-| Beyer2020 (paper) | Beyer, Krapp & Manica (2020), *Sci. Data* 7, 236 | [10.1038/s41597-020-0552-1](https://doi.org/10.1038/s41597-020-0552-1)
-| Beyer2021 (addendum) | Beyer, Krapp & Manica (2021), *Sci. Data* 8, 262 | [10.1038/s41597-021-01051-1](https://doi.org/10.1038/s41597-021-01051-1)
-| Beyer2021 (data, v4) | Beyer, Krapp & Manica (2021), figshare | [10.6084/m9.figshare.12293345.v4](https://doi.org/10.6084/m9.figshare.12293345.v4)
-| PalMod2 | Mikolajewicz et al. (2023), WDCC at DKRZ | [10.26050/WDCC/PMMXMCRTDGP111](https://doi.org/10.26050/WDCC/PMMXMCRTDGP111)
+| Dataset | Reference | DOI |
+| --- | --- | --- |
+| TraCE-21k | Otto-Bliesner & Rosenbloom (2021), NCAR GDEX d651050 | [10.5065/CXB5-TV56](https://doi.org/10.5065/CXB5-TV56) |
+| CHELSA-TraCE21k (paper) | Karger et al. (2023), *Clim. Past* 19, 439–456 | [10.5194/cp-19-439-2023](https://doi.org/10.5194/cp-19-439-2023) |
+| CHELSA-TraCE21k (data) | Karger et al. (2020), EnviDat | [10.16904/envidat.211](https://doi.org/10.16904/envidat.211) |
+| Beyer2020 (paper) | Beyer, Krapp & Manica (2020), *Sci. Data* 7, 236 | [10.1038/s41597-020-0552-1](https://doi.org/10.1038/s41597-020-0552-1) |
+| Beyer2021 (addendum) | Beyer, Krapp & Manica (2021), *Sci. Data* 8, 262 | [10.1038/s41597-021-01051-1](https://doi.org/10.1038/s41597-021-01051-1) |
+| Beyer2021 (data, v4) | Beyer, Krapp & Manica (2021), figshare | [10.6084/m9.figshare.12293345.v4](https://doi.org/10.6084/m9.figshare.12293345.v4) |
+| PalMod2 | Mikolajewicz et al. (2023), WDCC at DKRZ | [10.26050/WDCC/PMMXMCRTDGP111](https://doi.org/10.26050/WDCC/PMMXMCRTDGP111) |
 
 If you use this tool, please cite the underlying datasets above and this repository.
